@@ -1139,13 +1139,43 @@ footer{
   opacity:1;animation:zoomScan .6s ease forwards;
 }
 @keyframes zoomScan{0%{transform:scaleX(0);opacity:0}50%{opacity:1}100%{transform:scaleX(1);opacity:0}}
+@keyframes arcLeft{
+  0%  { transform:translateX(0) translateY(0) rotate(0deg) scale(1); opacity:1; }
+  40% { transform:translateX(-30%) translateY(-18%) rotate(-12deg) scale(0.85); opacity:0.6; }
+  100%{ transform:translateX(-110%) translateY(8%) rotate(-20deg) scale(0.7); opacity:0; }
+}
+@keyframes arcEnter{
+  0%  { transform:translateX(110%) translateY(8%) rotate(20deg) scale(0.7); opacity:0; }
+  60% { transform:translateX(20%) translateY(-12%) rotate(6deg) scale(0.92); opacity:0.8; }
+  100%{ transform:translateX(0) translateY(0) rotate(0deg) scale(1); opacity:1; }
+}
+.zoom-img-wrap.exit-left img { animation: arcLeft 0.65s cubic-bezier(0.4,0,0.2,1) forwards; }
+.zoom-img-wrap.enter-right img{ animation: arcEnter 0.65s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+/* Progress bar */
+.zoom-progress-bar{
+  width:min(1000px,90vw);height:2px;
+  background:rgba(0,245,255,0.08);
+  margin-top:.75rem;border-radius:2px;overflow:hidden;
+  position:relative;
+}
+.zoom-progress-fill{
+  height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  box-shadow:0 0 8px var(--cyan);
+  transition:none;
+}
+/* Counter */
+.zoom-counter{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--dim);letter-spacing:.15em;margin-top:.4rem;
+}
 
 .zoom-img-wrap{
   position:relative;
   max-width:min(1000px,90vw);
   max-height:80vh;
-  transform:scale(.92);opacity:0;
-  transition:transform .4s cubic-bezier(0.23,1,0.32,1), opacity .4s ease;
+  overflow:hidden;
   border:1px solid rgba(0,245,255,0.2);
   box-shadow:
     0 0 0 1px rgba(0,245,255,0.05),
@@ -1153,13 +1183,13 @@ footer{
     0 0 120px rgba(180,0,255,0.08),
     0 40px 80px rgba(0,0,0,0.8);
 }
-/* Corner decorations on zoomed image */
+#img-zoom-overlay.active .zoom-img-wrap{opacity:1;}
+/* Corner decorations */
 .zoom-img-wrap::before,.zoom-img-wrap::after{
-  content:'';position:absolute;width:20px;height:20px;z-index:2;pointer-events:none;
+  content:'';position:absolute;width:20px;height:20px;z-index:3;pointer-events:none;
 }
-.zoom-img-wrap::before{top:-1px;left:-1px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
-.zoom-img-wrap::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--purple);border-right:2px solid var(--purple);}
-
+.zoom-img-wrap::before{top:0;left:0;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
+.zoom-img-wrap::after{bottom:0;right:0;border-bottom:2px solid var(--purple);border-right:2px solid var(--purple);}
 .zoom-img-wrap img{
   display:block;
   max-width:min(1000px,90vw);
@@ -1438,7 +1468,7 @@ footer{
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genai')">
         <div class="hack-name">◈ GEN AI EXCHANGE HACKATHON <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ GOOGLE CLOUD</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built Generative AI solutions on Google Cloud infrastructure. Competed against top engineering teams nationwide.</p>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built an AI-powered marketplace for local artisans — 3D product visualization, AI story generator, and payment gateway. Organized by Google Cloud.</p>
         <div class="project-tags" style="margin-top:.75rem">
           <span class="tag">GENERATIVE AI</span><span class="tag">GOOGLE CLOUD</span>
         </div>
@@ -1449,8 +1479,8 @@ footer{
       <div class="hack-dot" style="border-color:var(--purple);box-shadow:0 0 10px var(--purple)"></div>
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('nexhack')">
         <div class="hack-name" style="color:var(--purple)">◈ NEXHACK <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
-        <div class="hack-org">⚡ GEETA UNIVERSITY</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Intense hackathon sprint focusing on AI-powered solutions for real-world institutional problems.</p>
+        <div class="hack-org">⚡ GEETA UNIVERSITY · NATIONAL LEVEL</div>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">First offline 24-hour hackathon. Built a Placement Readiness Dashboard — resume link analysis, certificate verification, and employability scoring. Cleared Round 1 out of 60 shortlisted teams.</p>
         <div class="project-tags" style="margin-top:.75rem">
           <span class="tag">AI</span><span class="tag">FULL STACK</span>
         </div>
@@ -1462,7 +1492,7 @@ footer{
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('aibharat')">
         <div class="hack-name" style="color:var(--pink)">◈ AI FOR BHARAT <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ AMAZON WEB SERVICES</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Deployed AI solutions on AWS infrastructure targeting India-specific social impact problems at scale.</p>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built Artify Bharat — a verification layer for handmade commerce. Geo-cluster validation, process evidence capture, and voice-assisted onboarding to make "handmade" truly verifiable.</p>
         <div class="project-tags" style="margin-top:.75rem">
           <span class="tag">AWS</span><span class="tag">ML</span><span class="tag">SOCIAL IMPACT</span>
         </div>
@@ -1604,16 +1634,20 @@ footer{
 <div id="img-zoom-overlay" onclick="closeZoom()">
   <div class="zoom-id">IMG_VIEWER // NEURAL_OS</div>
   <button class="zoom-close-btn" onclick="closeZoom()">✕</button>
-  <div class="zoom-img-wrap" id="zoom-img-wrap" onclick="event.stopPropagation()">
+  <div class="zoom-img-wrap" id="zoom-img-wrap" onclick="_zoomAdvance(1)">
     <div class="zoom-scan"></div>
     <img id="zoom-img" src="" alt=""/>
   </div>
   <div class="zoom-meta">
     <div class="zoom-label" id="zoom-label"></div>
-    <div class="zoom-hint">
-      <span>ESC — CLOSE</span>
-      <span style="color:rgba(0,245,255,0.2)">|</span>
-      <span>CLICK OUTSIDE — EXIT</span>
+    <div class="zoom-progress-bar"><div class="zoom-progress-fill" id="zoom-progress"></div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;width:min(1000px,90vw)"></div>
+      <div class="zoom-counter" id="zoom-counter"></div>
+      <div class="zoom-hint">
+        <span>← → NAVIGATE</span>
+        <span style="color:rgba(0,245,255,0.2)">|</span>
+        <span>ESC — CLOSE</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1849,73 +1883,73 @@ const PROJECTS = {
 ═══════════════════════════════════════════════════════ */
 const HACKATHONS = {
   genai: {
-    title: 'GEN AI EXCHANGE HACKATHON',
+    title: 'GEN AI EXCHANGE HACKATHON 2025',
     org: '⚡ GOOGLE CLOUD',
     color: '#00f5ff',
-    timeline: ['REGISTRATION', 'IDEATION', 'BUILD SPRINT', 'DEMO DAY', 'RESULTS'],
+    timeline: ['REGISTRATION', 'PROBLEM SELECTION', 'BUILD SPRINT', 'DEMO DAY', 'RESULTS'],
     story: {
-      problem: 'Designing a <strong>production-grade Generative AI solution</strong> on Google Cloud infrastructure within a time-boxed hackathon sprint against top national engineering teams.',
-      built: 'A <strong>context-aware AI assistant</strong> leveraging Vertex AI and Gemini APIs — deployed on Cloud Run with a real-time streaming interface, integrated with Google Cloud Storage and BigQuery for data.',
-      role: '<strong>Lead AI Engineer & Full-Stack Developer</strong> — architected the LLM pipeline, built the Flask API backend, and designed the frontend interaction model.',
-      result: 'Successfully competed against teams from premier engineering institutions. Gained deep Google Cloud certification-level exposure and built a deployable production AI product.',
+      problem: 'Local artisans in India struggle to find fair platforms to sell handmade products — <strong>middlemen capture most profits</strong>, leaving craftspeople underpaid. The challenge: build an AI-powered marketplace that empowers artisans directly.',
+      built: 'An <strong>AI-Powered Marketplace Assistant for Local Artisans</strong> — featuring 3D product visualization for buyers, an AI story generator that helps artisans create engaging product descriptions even with limited language skills, and a full payment gateway + database integration for a scalable, functional platform.',
+      role: '<strong>Co-builder with Parth Chawla</strong> — handled upload functionality, payment gateway integration, and overall architecture. Teammate managed the AI auto story generator and database setup. True parallel execution.',
+      result: 'Not shortlisted, but the idea validated as having <strong>real social and economic impact</strong>. Reignited problem-solving instincts and built confidence to think bigger for future hackathons.',
     },
     gallery: [
-      { img:'src/hackathon/gen ai echange/1sthome.png', label: 'GOOGLE CLOUD', sub: 'Vertex AI + Gemini' },
-      { img:'src/hackathon/gen ai echange/home.png', label: 'AI ASSISTANT', sub: 'Real-time Streaming' },
-      { img:'src/hackathon/gen ai echange/razopay.png', label: 'CLOUD RUN', sub: 'Production Deploy' },
-      { img:'src/hackathon/gen ai echange/chat.png', label: 'TEAM SPRINT', sub: '48hr Build' },
+      { img:'src/hackathon/gen ai echange/1sthome.png', label: 'MARKETPLACE HOME', sub: 'Artisan Platform UI' },
+      { img:'src/hackathon/gen ai echange/home.png', label: 'PRODUCT LISTING', sub: 'AI Story Generator' },
+      { img:'src/hackathon/gen ai echange/razopay.png', label: 'PAYMENT GATEWAY', sub: 'Razorpay Integration' },
+      { img:'src/hackathon/gen ai echange/chat.png', label: 'AI ASSISTANT', sub: '3D Visualization Chat' },
     ],
     certs: [
       { img:'src/hackathon/gen ai echange/crtf.jpg', name: 'PARTICIPATION CERTIFICATE', issuer: 'Google Cloud' },
       { icon: '☁️', name: 'GEN AI EXPERIENCE', issuer: 'Google Cloud Platform' },
     ],
-    highlights: ['☁️ Google Cloud APIs', '⚡ Vertex AI + Gemini', '🚀 Cloud Run Deploy', '⏱ 48hr Sprint', '🤖 Production LLM App'],
+    highlights: ['🎨 Artisan Marketplace', '🧠 AI Story Generator', '✨ 3D Product Visualization', '💳 Razorpay Integration', '🤝 Team: Parth Chawla', '☁️ Google Cloud'],
   },
   nexhack: {
-    title: 'NEXHACK',
-    org: '⚡ GEETA UNIVERSITY',
+    title: 'NEXHACK — GEETA UNIVERSITY',
+    org: '⚡ GEETA UNIVERSITY · NATIONAL LEVEL',
     color: '#b400ff',
-    timeline: ['PROBLEM STMT', 'TEAM FORM', 'HACKING', 'PRESENTATION', 'JUDGING'],
+    timeline: ['ONLINE ELIMINATION', 'SHORTLISTED (60/150+)', 'OFFLINE 24HR SPRINT', 'ROUND 1 CLEARED', 'ROUND 2'],
     story: {
-      problem: 'Build <strong>AI-powered solutions</strong> for real institutional and administrative problems faced by universities — from student tracking to resource optimization.',
-      built: 'An <strong>intelligent campus management platform</strong> combining ML-based attendance analytics, automated timetable optimization, and a student performance prediction dashboard.',
-      role: '<strong>Full-Stack Developer & ML Engineer</strong> — built the Django backend, ML prediction models using scikit-learn, and integrated Power BI for administrator dashboards.',
-      result: '<strong>Competed and presented</strong> to a panel of industry judges. Received strong feedback on the product completeness and real-world applicability of the solution.',
+      problem: 'Students lack data-driven tools to assess their own employability. The problem statement: <strong>Placement Readiness Dashboard for Students</strong> — helping students identify skill gaps and improve their chances through actionable insights.',
+      built: 'A full-stack placement readiness platform with <strong>resume link extraction</strong> (LeetCode, Codeforces, GitHub auto-analysis), <strong>automated certificate verification</strong> from uploaded resumes, and a real-time employability dashboard with data-driven scoring.',
+      role: '<strong>Yashit (you)</strong> — built the feature that extracts and analyzes data from coding profile links (LeetCode, Codeforces, GitHub) mentioned in resumes. Team: Aryan Kr (UI), Raghav Kwatra (certificate verification), Parth Chawla (backend + APIs).',
+      result: '<strong>Cleared Round 1</strong> of judging at the offline stage. Couldn\'t advance past Round 2, but performed significantly better than previous hackathons. First offline 24-hour hackathon — sleepless, intense, and deeply rewarding.',
     },
     gallery: [
-      { img:'src/hackathon/nexhack/selfe.png', label: 'CAMPUS AI', sub: 'Institutional Platform' },
-      { img:'src/hackathon/nexhack/laptop.png', label: 'ML DASHBOARD', sub: 'Student Analytics' },
-      { img:'src/hackathon/nexhack/swag.png', label: 'DJANGO APP', sub: 'Full-Stack Build' },
-      { img:'src/hackathon/nexhack/cofee.png', label: 'GEETA UNIV.', sub: 'Hackathon Venue' },
+      { img:'src/hackathon/nexhack/selfe.png', label: 'HACKERS_GANG', sub: 'Team at NexHack' },
+      { img:'src/hackathon/nexhack/laptop.png', label: 'DASHBOARD BUILD', sub: 'Placement Readiness' },
+      { img:'src/hackathon/nexhack/swag.png', label: 'HACKATHON SWAG', sub: '24hr Offline Sprint' },
+      { img:'src/hackathon/nexhack/cofee.png', label: 'FUEL', sub: 'Sleepless Night Mode' },
     ],
     certs: [
-      { icon: '🏅', name: 'NEXHACK PARTICIPANT', issuer: 'Geeta University' },
-      { icon: '🎯', name: 'AI SOLUTIONS TRACK', issuer: 'NexHack 2024' },
+      { img:'src/hackathon/nexhack/crtf_nex.png', name: 'NEXHACK PARTICIPANT', issuer: 'Geeta University' },
+      { icon: '🎯', name: 'NATIONAL LEVEL · ROUND 1 CLEARED', issuer: 'NexHack 2024' },
     ],
-    highlights: ['🏛️ University Hackathon', '🤖 AI + Full Stack', '📊 Power BI Dashboards', '⚡ Django Backend', '🎓 Real Institution Problem'],
+    highlights: ['🏛️ National Level Hackathon', '⏱ 24hr Offline Sprint', '60 / 150+ Teams', '✅ Round 1 Cleared', '👥 Team: Hackers_Gang', '📊 Placement Dashboard'],
   },
   aibharat: {
-    title: 'AI FOR BHARAT',
+    title: 'AI FOR BHARAT — ARTIFY BHARAT',
     org: '⚡ AMAZON WEB SERVICES',
     color: '#ff0090',
-    timeline: ['CHALLENGE', 'IDEATION', 'AWS BUILD', 'DEMO', 'EVALUATION'],
+    timeline: ['PROBLEM SELECTION', 'IDEATION', 'PROTOTYPE BUILD', 'DEMO', 'EVALUATION'],
     story: {
-      problem: 'Deploy scalable <strong>AI solutions on AWS</strong> that address India-specific social impact problems — healthcare access, agricultural insights, or education equity.',
-      built: 'A <strong>ML-powered agricultural advisory system</strong> deployed on AWS SageMaker — crop disease detection from images using a fine-tuned EfficientNet model, with SMS alerts via AWS SNS for low-connectivity rural farmers.',
-      role: '<strong>ML Engineer & AWS Architect</strong> — model training pipeline, SageMaker deployment, API Gateway + Lambda integration, and SNS notification system.',
-      result: 'Successfully deployed a <strong>production ML endpoint on AWS infrastructure</strong> with end-to-end inference pipeline. Strong social impact framing appreciated by evaluators.',
+      problem: 'Handmade marketplaces rely only on <strong>seller claims — no verified maker identity</strong>. This leads to fake "handmade" listings, loss of buyer trust, and artisans losing their true value and income to middlemen.',
+      built: '<strong>Artify Bharat</strong> — a verification layer for handmade commerce answering 3 key questions: Who made it? Where was it made? How was it made? Features: geo-cluster validation, process evidence capture (raw → mid → finished), identity + workspace binding, and <strong>voice-assisted onboarding</strong> with an automated storytelling pipeline.',
+      role: '<strong>Team: The Craft Corridor</strong> — built the working prototype with teammates Parth, Raghav & Gourav Kumar. Voice-assisted product entry, verification pipeline, and the automated story generator were core deliverables.',
+      result: 'Built a <strong>working prototype</strong> that makes "handmade" truly verifiable. More than a hackathon — a real solution for Bharat\'s artisans. Strong appreciation for the social impact framing and technical depth.',
     },
     gallery: [
-      { img:'src/hackathon/ai for bharat/session.png', label: 'AGRI AI', sub: 'Crop Disease Detection' },
-      { img:'src/hackathon/ai for bharat/why.png', label: 'AWS SAGEMAKER', sub: 'ML Production Deploy' },
-      { img:'src/hackathon/ai for bharat/identity.png', label: 'SMS ALERTS', sub: 'AWS SNS Integration' },
-      { img:'src/hackathon/ai for bharat/voice.jpeg', label: 'BHARAT IMPACT', sub: 'Social Innovation' },
+      { img:'src/hackathon/ai for bharat/session.png', label: 'ARTIFY BHARAT', sub: 'Verification Layer Demo' },
+      { img:'src/hackathon/ai for bharat/why.png', label: 'WHY IT MATTERS', sub: 'Artisan Identity Problem' },
+      { img:'src/hackathon/ai for bharat/identity.png', label: 'IDENTITY BINDING', sub: 'Workspace Verification' },
+      { img:'src/hackathon/ai for bharat/voice.jpeg', label: 'VOICE ONBOARDING', sub: 'Inclusive UX Pipeline' },
     ],
     certs: [
       { img:'src/hackathon/ai for bharat/crtf.png', name: 'AI FOR BHARAT CERTIFICATE', issuer: 'Amazon Web Services' },
-      { icon: '☁️', name: 'AWS BUILDER RECOGNITION', issuer: 'AWS India' },
+      { icon: '🇮🇳', name: 'AWS BUILDER RECOGNITION', issuer: 'AWS India' },
     ],
-    highlights: ['🇮🇳 Social Impact Focus', '☁️ AWS SageMaker Deploy', '🌾 AgriTech Domain', '📱 SNS + Lambda', '🤖 EfficientNet Fine-tune'],
+    highlights: ['� Artify Bharat', '🔍 Geo-cluster Validation', '🗣️, Voice-assisted Onboarding', '� Process Evidence Capture', '👥 Team: The Craft Corridor', '🇮🇳 Make In India'],
   },
   innovate: {
     title: 'INNOVATE FOR IMPACT',
@@ -1999,7 +2033,12 @@ function renderGallery(slides) {
           <div class="gp-sub">${s.sub}</div>
         </div>`;
     }
-    slide.onclick = () => s.img ? openZoom(s.img, s.label, true) : openZoom(s.icon, s.label, false);
+    slide.onclick = () => {
+      const imgSlides = currentSlides.filter(x => x.img).map(x => ({src:x.img, label:x.label}));
+      const idx = imgSlides.findIndex(x => x.src === s.img);
+      if (s.img) openZoom(imgSlides, idx >= 0 ? idx : 0);
+      else openZoom([{src:s.icon||'◧', label:s.label}], 0, false);
+    };
     vp.insertBefore(slide, vp.querySelector('.gallery-scan'));
 
     // Dot
@@ -2128,6 +2167,7 @@ document.getElementById('project-modal-overlay').addEventListener('click', funct
 ═══════════════════════════════════════════════════════ */
 function openHackathonMemory(id) {
   const h = HACKATHONS[id];
+  const hKey = id;
   if (!h) return;
 
   // Timeline bar
@@ -2188,7 +2228,7 @@ function openHackathonMemory(id) {
                  <span class="pol-label">${g.label}</span>
                </div>`;
           return `
-          <div class="polaroid" style="--rot:${rot}deg" ${g.img ? `onclick="openZoom('${g.img}','${g.label}',true)"` : ''}>
+          <div class="polaroid" style="--rot:${rot}deg" ${g.img ? `data-zoom-idx="${i}" data-zoom-key="${hKey}"` : ''}>
             <div class="polaroid-img" style="${g.img ? 'cursor:zoom-in' : ''}">
               ${inner}
             </div>
@@ -2202,8 +2242,8 @@ function openHackathonMemory(id) {
     <div class="mem-cert-section">
       <div class="mem-gallery-label">CERTIFICATES & RECOGNITION</div>
       <div class="cert-cards">
-        ${h.certs.map(c => `
-          <div class="cert-card ${c.img ? 'has-img' : ''}" ${c.img ? `onclick="openZoom('${c.img}','${c.name}',true)"` : ''}>
+        ${h.certs.map((c, ci) => `
+          <div class="cert-card ${c.img ? 'has-img' : ''}" ${c.img ? `data-cert-img="${c.img}" data-cert-name="${c.name}"` : ''}>
             ${c.img ? `
             <div class="cert-img-preview">
               <img src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/>
@@ -2230,6 +2270,24 @@ function openHackathonMemory(id) {
   ov.classList.add('active');
   document.getElementById('hack-modal').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+
+  // Wire polaroid clicks using data attributes (avoids JSON-in-HTML quoting issues)
+  const imgSlides = h.gallery.filter(g => g.img).map(g => ({ src: g.img, label: g.label }));
+  document.querySelectorAll('.polaroid[data-zoom-key]').forEach(el => {
+    if (el.dataset.zoomKey !== id) return;
+    el.addEventListener('click', () => {
+      const rawIdx = parseInt(el.dataset.zoomIdx, 10);
+      const imgIdx = imgSlides.findIndex(s => s.src === h.gallery[rawIdx]?.img);
+      openZoom(imgSlides, imgIdx >= 0 ? imgIdx : 0);
+    });
+  });
+
+  // Wire cert card clicks
+  document.querySelectorAll('.cert-card[data-cert-img]').forEach(el => {
+    el.addEventListener('click', () => {
+      openZoom([{ src: el.dataset.certImg, label: el.dataset.certName }], 0);
+    });
+  });
 }
 
 function closeHackathonMemory() {
@@ -2240,46 +2298,119 @@ function closeHackathonMemory() {
 document.getElementById('hack-close-btn').onclick = closeHackathonMemory;
 
 /* ═══════════════════════════════════════════════════════
-   ZOOM
+   ZOOM — auto-advance with arc animation
 ═══════════════════════════════════════════════════════ */
-function openZoom(src, label, isImage) {
-  const z = document.getElementById('img-zoom-overlay');
-  const wrap = document.getElementById('zoom-img-wrap');
-  const img = document.getElementById('zoom-img');
-  const lbl = document.getElementById('zoom-label');
+let _zoomImages = [];
+let _zoomIdx    = 0;
+let _zoomTimer  = null;
+let _zoomProg   = null;
+const ZOOM_DELAY = 4500; // ms per image
 
-  if (isImage) {
-    wrap.style.display = '';
-    img.src = src;
-    img.alt = label;
-    lbl.textContent = label;
-    z.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  } else {
-    // emoji/icon fallback — show centered big
-    wrap.style.display = 'none';
-    lbl.textContent = label;
-    z.innerHTML = `
-      <div class="zoom-id">IMG_VIEWER // NEURAL_OS</div>
-      <button class="zoom-close-btn" onclick="closeZoom()">✕</button>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem">
-        <div style="font-size:7rem;filter:drop-shadow(0 0 30px rgba(0,245,255,0.4))">${src}</div>
-        <div class="zoom-label">${label}</div>
-        <div class="zoom-hint" style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em">ESC — CLOSE</div>
-      </div>`;
-    z.classList.add('active');
-    document.body.style.overflow = 'hidden';
+function openZoom(images, startIdx, isImage) {
+  // Support legacy single-image calls
+  if (typeof images === 'string') {
+    images = [{ src: images, label: startIdx || '' }];
+    startIdx = 0;
   }
+  _zoomImages = Array.isArray(images) ? images : [];
+  _zoomIdx    = startIdx || 0;
+
+  const z = document.getElementById('img-zoom-overlay');
+  document.body.style.overflow = 'hidden';
+
+  if (!_zoomImages.length || isImage === false) {
+    // emoji fallback
+    const src = _zoomImages[0]?.src || '';
+    const lbl = _zoomImages[0]?.label || '';
+    document.getElementById('zoom-img-wrap').style.display = 'none';
+    document.getElementById('zoom-label').textContent = lbl;
+    document.getElementById('zoom-counter').textContent = '';
+    z.classList.add('active');
+    return;
+  }
+
+  document.getElementById('zoom-img-wrap').style.display = '';
+  z.classList.add('active');
+  _zoomSetSlide(_zoomIdx, 'enter');
+  _zoomStartTimer();
+
+  // keyboard nav
+  z._keyHandler = (e) => {
+    if (e.key === 'ArrowRight') { _zoomAdvance(1); }
+    if (e.key === 'ArrowLeft')  { _zoomAdvance(-1); }
+  };
+  document.addEventListener('keydown', z._keyHandler);
+}
+
+function _zoomSetSlide(idx, dir) {
+  const img  = document.getElementById('zoom-img');
+  const lbl  = document.getElementById('zoom-label');
+  const ctr  = document.getElementById('zoom-counter');
+  const wrap = document.getElementById('zoom-img-wrap');
+  const s    = _zoomImages[idx];
+  if (!s) return;
+
+  img.src = s.src;
+  img.alt = s.label;
+  lbl.textContent = s.label;
+  ctr.textContent = `${idx + 1} / ${_zoomImages.length}`;
+
+  // trigger animation
+  wrap.classList.remove('exit-left', 'enter-right');
+  void wrap.offsetWidth; // reflow
+  if (dir === 'enter') wrap.classList.add('enter-right');
+}
+
+function _zoomAdvance(dir) {
+  const wrap = document.getElementById('zoom-img-wrap');
+  _zoomStopTimer();
+
+  // arc-left exit
+  wrap.classList.remove('exit-left', 'enter-right');
+  void wrap.offsetWidth;
+  wrap.classList.add('exit-left');
+
+  setTimeout(() => {
+    _zoomIdx = ((_zoomIdx + dir) + _zoomImages.length) % _zoomImages.length;
+    _zoomSetSlide(_zoomIdx, 'enter');
+    _zoomStartTimer();
+  }, 400);
+}
+
+function _zoomStartTimer() {
+  _zoomStopTimer();
+  if (_zoomImages.length <= 1) return;
+
+  const fill = document.getElementById('zoom-progress');
+  if (!fill) return;
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  void fill.offsetWidth;
+  fill.style.transition = `width ${ZOOM_DELAY}ms linear`;
+  fill.style.width = '100%';
+
+  _zoomTimer = setTimeout(() => _zoomAdvance(1), ZOOM_DELAY);
+}
+
+function _zoomStopTimer() {
+  if (_zoomTimer) { clearTimeout(_zoomTimer); _zoomTimer = null; }
+  const fill = document.getElementById('zoom-progress');
+  if (fill) { fill.style.transition = 'none'; fill.style.width = '0%'; }
 }
 
 function closeZoom() {
+  _zoomStopTimer();
   const z = document.getElementById('img-zoom-overlay');
+  if (z._keyHandler) {
+    document.removeEventListener('keydown', z._keyHandler);
+    z._keyHandler = null;
+  }
   z.classList.remove('active');
   document.body.style.overflow = '';
-  // reset after transition
   setTimeout(() => {
     const img = document.getElementById('zoom-img');
     if (img) img.src = '';
+    _zoomImages = []; _zoomIdx = 0;
   }, 350);
 }
 
