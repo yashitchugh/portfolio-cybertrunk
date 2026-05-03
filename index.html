@@ -1464,18 +1464,6 @@ footer{
   <div class="hackathon-timeline">
 
     <div class="hack-item reveal">
-      <div class="hack-dot"></div>
-      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genai')">
-        <div class="hack-name">◈ GEN AI EXCHANGE HACKATHON <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
-        <div class="hack-org">⚡ GOOGLE CLOUD</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built an AI-powered marketplace for local artisans — 3D product visualization, AI story generator, and payment gateway. Organized by Google Cloud.</p>
-        <div class="project-tags" style="margin-top:.75rem">
-          <span class="tag">GENERATIVE AI</span><span class="tag">GOOGLE CLOUD</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hack-item reveal reveal-delay-1">
       <div class="hack-dot" style="border-color:var(--purple);box-shadow:0 0 10px var(--purple)"></div>
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('nexhack')">
         <div class="hack-name" style="color:var(--purple)">◈ NEXHACK <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
@@ -1483,6 +1471,18 @@ footer{
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">First offline 24-hour hackathon. Built a Placement Readiness Dashboard — resume link analysis, certificate verification, and employability scoring. Cleared Round 1 out of 60 shortlisted teams.</p>
         <div class="project-tags" style="margin-top:.75rem">
           <span class="tag">AI</span><span class="tag">FULL STACK</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hack-item reveal reveal-delay-1">
+      <div class="hack-dot"></div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genai')">
+        <div class="hack-name">◈ GEN AI EXCHANGE HACKATHON <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
+        <div class="hack-org">⚡ GOOGLE CLOUD</div>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built an AI-powered marketplace for local artisans — 3D product visualization, AI story generator, and payment gateway. Organized by Google Cloud.</p>
+        <div class="project-tags" style="margin-top:.75rem">
+          <span class="tag">GENERATIVE AI</span><span class="tag">GOOGLE CLOUD</span>
         </div>
       </div>
     </div>
@@ -1502,11 +1502,11 @@ footer{
     <div class="hack-item reveal reveal-delay-3">
       <div class="hack-dot" style="border-color:var(--green);box-shadow:0 0 10px var(--green)"></div>
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('innovate')">
-        <div class="hack-name" style="color:var(--green)">◈ INNOVATE FOR IMPACT <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
-        <div class="hack-org">⚡ IIIT DELHI</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Premier ideathon at IIIT Delhi — presented data-driven, AI-backed innovation for measurable societal impact.</p>
+        <div class="hack-name" style="color:var(--green)">◈ IDEA FOR IMPACT IDEATHON <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
+        <div class="hack-org">⚡ IIIT DELHI · INDRAPRASTHA INSTITUTE OF INFORMATION TECHNOLOGY</div>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">One-day ideathon at IIIT Delhi — built a full idea pitch with Value Proposition Canvas, BMC, feasibility & market research. Felt like living a dream college life for a day.</p>
         <div class="project-tags" style="margin-top:.75rem">
-          <span class="tag">IDEATHON</span><span class="tag">DATA SCIENCE</span>
+          <span class="tag">IDEATHON</span><span class="tag">STARTUP MINDSET</span><span class="tag">TEAM OF 4</span>
         </div>
       </div>
     </div>
@@ -1515,8 +1515,8 @@ footer{
       <div class="hack-dot" style="border-color:var(--blue);box-shadow:0 0 10px var(--blue)"></div>
       <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genaidev')">
         <div class="hack-name" style="color:var(--blue)">◈ GEN AI FOR DEV: HYPE TO DAILY CODING <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
-        <div class="hack-org">⚡ FEATURED EVENT / SPEAKER SESSION</div>
-        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Participated in high-signal developer event on integrating Generative AI into real coding workflows and production systems.</p>
+        <div class="hack-org">⚡ MICROSOFT · FEB 13, 2025</div>
+        <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Attended Microsoft's Gen AI event — connected deeply because I'd already built on it. Left with one clear truth: stand out in something. Happiness isn't from circumstances, it's from attitude.</p>
         <div class="project-tags" style="margin-top:.75rem">
           <span class="tag">GEN AI</span><span class="tag">DEV TOOLS</span>
         </div>
@@ -1952,50 +1952,50 @@ const HACKATHONS = {
     highlights: ['� Artify Bharat', '🔍 Geo-cluster Validation', '🗣️, Voice-assisted Onboarding', '� Process Evidence Capture', '👥 Team: The Craft Corridor', '🇮🇳 Make In India'],
   },
   innovate: {
-    title: 'INNOVATE FOR IMPACT',
-    org: '⚡ IIIT DELHI',
+    title: 'IDEA FOR IMPACT IDEATHON',
+    org: '⚡ INDRAPRASTHA INSTITUTE OF INFORMATION TECHNOLOGY, DELHI',
     color: '#00ff88',
-    timeline: ['BRIEF', 'RESEARCH', 'PROTOTYPE', 'PITCHING', 'AWARDS'],
+    timeline: ['REGISTRATION', 'IDEATION', 'RESEARCH', 'DOCUMENTATION', 'PITCH DAY'],
     story: {
-      problem: 'Present a <strong>data-driven, AI-backed innovation</strong> addressing measurable societal challenges — evaluated by IIIT Delhi faculty and industry experts.',
-      built: 'A comprehensive <strong>urban traffic & pollution prediction system</strong> — combining IoT sensor simulation, real-time data analysis with Python, and a predictive ML dashboard showing city-level environmental impact forecasts.',
-      role: '<strong>Data Science Lead & Presenter</strong> — data pipeline design, ML model development (LSTM + ARIMA hybrid), visualization layer, and lead presenter in the ideathon pitch.',
-      result: '<strong>Presented at IIIT Delhi</strong> to a distinguished panel. Recognized for depth of research, data methodology, and clarity of societal impact narrative.',
+      problem: 'Participating in the <strong>Idea for Impact Ideathon at IIIT Delhi</strong> — a one-day ideathon where teams had to identify a real-world problem, validate it with market research, and present a structured solution with a Business Model Canvas and Value Proposition.',
+      built: 'A fully structured idea pitch with <strong>Value Proposition Canvas, Problem Statement & Solution</strong>, Business Model Canvas (BMC), feasibility analysis, and market research — all built under pressure in a single day. The environment was electric: everyone around was building, thinking, and pushing ideas forward.',
+      role: '<strong>Value Proposition Canvas, Problem Statement & Solution</strong> — defined the core user pain points, mapped the solution fit, and crafted the problem-solution narrative. Team: <strong>Raghav Kwatra & Gourav Kumar</strong> (Feasibility & Market Research) · <strong>Parth Chawla</strong> (BMC & Documentation).',
+      result: 'More than a competition — it felt like <strong>living a one-day dream college life</strong>. Gained deep insights into teamwork, ideation, and execution under pressure. Pure focus, collaboration, and innovation from every team throughout the day.',
     },
     gallery: [
-      { img:'src/hackathon/innovate/snap8.jpeg', label: 'URBAN AI', sub: 'Traffic + Pollution Model' },
-      { img:'src/hackathon/innovate/snap5.jpeg', label: 'IOT SIMULATION', sub: 'Sensor Data Pipeline' },
-      { img:'src/hackathon/innovate/snap4.jpeg', label: 'LSTM + ARIMA', sub: 'Hybrid Forecasting' },
-      { img:'src/hackathon/innovate/snap3.jpeg', label: 'IIIT DELHI', sub: 'Premier Ideathon' },
+      { img:'src/hackathon/innovate/snap8.jpeg', label: 'PITCH DAY', sub: 'IIIT Delhi Ideathon' },
+      { img:'src/hackathon/innovate/snap5.jpeg', label: 'TEAM IN ACTION', sub: 'Ideation & Research' },
+      { img:'src/hackathon/innovate/snap4.jpeg', label: 'DOCUMENTATION', sub: 'BMC & Value Prop Canvas' },
+      { img:'src/hackathon/innovate/snap3.jpeg', label: 'IIIT DELHI', sub: 'One-Day Dream College Life' },
     ],
     certs: [
-      { icon: '🏅', name: 'INNOVATE FOR IMPACT', issuer: 'IIIT Delhi' },
-      { icon: '🎯', name: 'DATA SCIENCE TRACK', issuer: 'IIIT Delhi Ideathon' },
+      { icon: '🏅', name: 'IDEA FOR IMPACT IDEATHON', issuer: 'IIIT Delhi' },
+      { icon: '🤝', name: 'TEAM EFFORT AWARD', issuer: 'Collaboration & Innovation' },
     ],
-    highlights: ['🏫 IIIT Delhi Stage', '📊 Data Science Focus', '🌆 Urban Tech Solution', '📈 LSTM + ARIMA Model', '🎤 Ideathon Pitch'],
+    highlights: ['🏫 IIIT Delhi', '💡 Ideathon', '📋 Value Proposition Canvas', '📊 BMC & Market Research', '👥 Team of 4', '🚀 Startup Mindset', '⚡ Execution Under Pressure'],
   },
   genaidev: {
-    title: 'GEN AI FOR DEV',
-    org: '⚡ FEATURED SPEAKER EVENT',
+    title: 'GEN AI FOR DEV: HYPE TO DAILY CODING',
+    org: '⚡ MICROSOFT · FEB 13, 2025',
     color: '#0080ff',
-    timeline: ['REGISTRATION', 'SESSIONS', 'WORKSHOPS', 'NETWORKING', 'CERTIFICATION'],
+    timeline: ['REGISTERED', 'FEB 13 EVENT', 'SESSIONS', 'REFLECTION', 'TAKEAWAY'],
     story: {
-      problem: 'Bridging the gap between <strong>Gen AI hype</strong> and practical day-to-day developer workflows — understanding where LLMs actually fit in production coding pipelines.',
-      built: 'Attended high-signal sessions on <strong>Copilot, Cursor, and LLM-assisted development</strong> — built a personal toolkit of AI-augmented workflows including prompt-driven test generation, automated code review, and RAG-based documentation search.',
-      role: '<strong>Active Participant & Workshop Attendee</strong> — hands-on labs, speaker Q&A, and peer developer discussions on production AI tooling integration.',
-      result: 'Expanded professional network with senior developers and AI researchers. Gained actionable frameworks for <strong>integrating Gen AI into daily coding</strong> that directly improved project development speed by 3x.',
+      problem: 'The gap between <strong>Gen AI hype and actual daily coding</strong> — everyone talks about AI tools but few understand where they genuinely fit vs. where they\'re just noise. Attended this Microsoft event to find out firsthand.',
+      built: 'Connected deeply with the sessions because I had <strong>already worked on Gen AI</strong> — it felt like my own version was in a silent fight with what was being shown on stage. Absorbed real patterns for integrating AI into dev workflows beyond the surface level.',
+      role: '<strong>Attendee & Active Thinker</strong> — not just a passive listener. The event triggered a key realization: to stand out you have to go deep in <em>something</em> — whether DSA, dev, or AI. Being average across everything is invisible.',
+      result: 'Left with more than technical insight. Realized that <strong>happiness isn\'t tied to circumstances</strong> — not even landing a dream job guarantees it. As the book says: a person is not happy because of circumstances, but because of a certain set of attitude. That hit different on Feb 13.',
     },
     gallery: [
-      { img:'src/hackathon/microsoft/pass_event.jpeg', label: 'SPEAKER SESSIONS', sub: 'Industry Experts' },
-      { img:'src/hackathon/microsoft/event1.jpeg', label: 'AI DEV TOOLS', sub: 'Copilot + Cursor' },
-      { icon: '🔬', label: 'WORKSHOPS', sub: 'Hands-on Labs' },
-      { icon: '🤝', label: 'NETWORKING', sub: 'Dev Community' },
+      { img:'src/hackathon/microsoft/pass_event.jpeg', label: 'EVENT PASS', sub: 'Microsoft · Feb 13' },
+      { img:'src/hackathon/microsoft/event1.jpeg', label: 'GEN AI SESSIONS', sub: 'Hype to Daily Coding' },
+      { img:'src/hackathon/microsoft/WhatsApp Image 2026-02-13 at 21.25.08.jpeg', label: 'ON THE DAY', sub: 'Feb 13, 2025' },
+      { icon: '🪞', label: 'THE MIRROR MOMENT', sub: 'My version vs the stage' },
     ],
     certs: [
-      { icon: '🏅', name: 'EVENT PARTICIPATION', issuer: 'Gen AI for Dev 2024' },
-      { icon: '⚡', name: 'GEN AI PRACTITIONER', issuer: 'Featured Event' },
+      { icon: '🏅', name: 'EVENT PARTICIPATION', issuer: 'Microsoft · Gen AI for Dev' },
+      { icon: '💡', name: 'STANDOUT MINDSET', issuer: 'Personal Takeaway' },
     ],
-    highlights: ['🎤 Live Speaker Sessions', '⚡ AI Dev Tooling', '🔬 Hands-on Workshops', '🤝 Dev Community', '📚 Production AI Workflows'],
+    highlights: ['🏢 Microsoft Event', '📅 Feb 13 2025', '🪞 Mirror Moment', '💡 Standout in Something', '📖 Attitude > Circumstances', '⚡ Gen AI × Daily Dev'],
   },
 };
 
