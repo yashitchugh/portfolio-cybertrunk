@@ -619,6 +619,481 @@ footer{
 /* NEON TEXT */
 .neon-text-cyan{color:var(--cyan);text-shadow:0 0 10px var(--cyan);}
 .neon-text-purple{color:var(--purple);text-shadow:0 0 10px var(--purple);}
+
+/* ── ACCESS BTN UPGRADE ── */
+.access-btn{cursor:none;background:transparent;}
+.access-btn:hover{background:rgba(180,0,255,0.12);box-shadow:0 0 20px rgba(180,0,255,0.3);transform:translateY(-1px);}
+
+/* ── HACK CARD CLICKABLE ── */
+.hack-card-clickable{cursor:none;position:relative;}
+.hack-open-hint{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);opacity:0;transition:opacity .3s;letter-spacing:.08em;}
+.hack-card-clickable:hover .hack-open-hint{opacity:1;color:var(--cyan);}
+.hack-card-clickable:hover{cursor:none;border-color:rgba(0,245,255,0.5);box-shadow:0 0 25px rgba(0,245,255,0.1);}
+
+/* ═══════════════════════════════════════
+   PROJECT MODAL SYSTEM
+═══════════════════════════════════════ */
+#project-modal-overlay{
+  position:fixed;inset:0;z-index:10000;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease,visibility .4s ease;
+  background:rgba(2,4,8,0.92);
+  backdrop-filter:blur(24px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+}
+#project-modal-overlay.active{opacity:1;visibility:visible;}
+#project-modal{
+  width:min(1100px,100%);
+  max-height:90vh;
+  background:linear-gradient(135deg,rgba(0,245,255,0.04),rgba(180,0,255,0.04));
+  border:1px solid rgba(0,245,255,0.25);
+  border-radius:6px;
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  overflow:hidden;
+  transform:scale(.92) translateY(20px);
+  transition:transform .45s cubic-bezier(0.23,1,0.32,1);
+  box-shadow:0 0 80px rgba(0,245,255,0.08),0 0 160px rgba(180,0,255,0.06),inset 0 1px 0 rgba(0,245,255,0.15);
+}
+#project-modal-overlay.active #project-modal{transform:scale(1) translateY(0);}
+
+/* Boot scan line on open */
+#project-modal::before{
+  content:'';position:absolute;
+  top:-2px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
+  animation:modalScan 2s ease;
+  z-index:5;
+}
+@keyframes modalScan{0%{opacity:0;transform:scaleX(0)}30%{opacity:1}100%{opacity:0;transform:scaleX(1)}}
+
+/* Corner decorations */
+#project-modal::after{
+  content:'';position:absolute;
+  top:0;left:0;width:20px;height:20px;
+  border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);
+  pointer-events:none;z-index:5;
+}
+.modal-corner-br{
+  position:absolute;bottom:0;right:0;width:20px;height:20px;
+  border-bottom:2px solid var(--purple);border-right:2px solid var(--purple);
+  pointer-events:none;z-index:5;
+}
+
+/* LEFT PANEL — Image Gallery */
+.modal-gallery-panel{
+  background:rgba(0,0,0,0.4);
+  border-right:1px solid rgba(0,245,255,0.1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  min-height:0;
+}
+.gallery-viewport{
+  position:relative;flex:1;min-height:260px;
+  overflow:hidden;
+  background:#000;
+}
+.gallery-slide{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .5s ease,transform .5s ease;
+  transform:translateX(60px);
+  cursor:zoom-in;
+}
+.gallery-slide.active{opacity:1;transform:translateX(0);}
+.gallery-slide.prev{opacity:0;transform:translateX(-60px);}
+.gallery-img-wrap{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.gallery-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+}
+/* Placeholder visuals when no real images */
+.gallery-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:1rem;font-family:'Share Tech Mono',monospace;
+  position:relative;overflow:hidden;
+}
+.gallery-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,245,255,0.06) 1px,transparent 1px);
+  background-size:30px 30px;
+  animation:gridMove 3s linear infinite;
+}
+.gallery-placeholder .gp-icon{font-size:3rem;position:relative;z-index:1;}
+.gallery-placeholder .gp-label{
+  font-size:.7rem;color:var(--cyan);letter-spacing:.15em;
+  position:relative;z-index:1;
+  text-shadow:0 0 10px var(--cyan);
+}
+.gallery-placeholder .gp-sub{font-size:.6rem;color:var(--dim);position:relative;z-index:1;}
+/* Scan line effect on gallery */
+.gallery-scan{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 0%,rgba(0,245,255,0.04) 50%,transparent 100%);
+  animation:scan 3s ease infinite;z-index:2;
+}
+/* Gallery controls */
+.gallery-controls{
+  position:absolute;bottom:10px;left:0;right:0;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  z-index:3;
+}
+.gallery-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(0,245,255,0.3);border:1px solid rgba(0,245,255,0.5);
+  cursor:none;transition:all .2s;
+}
+.gallery-dot.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.gallery-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:36px;height:36px;
+  background:rgba(0,0,0,0.7);border:1px solid rgba(0,245,255,0.3);
+  border-radius:2px;color:var(--cyan);font-size:1rem;
+  cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;z-index:3;
+  font-family:'Share Tech Mono',monospace;
+  backdrop-filter:blur(8px);
+}
+.gallery-arrow:hover{background:rgba(0,245,255,0.15);box-shadow:0 0 15px rgba(0,245,255,0.3);}
+.gallery-arrow.left{left:10px;}
+.gallery-arrow.right{right:10px;}
+/* Thumbnail strip */
+.gallery-thumbs{
+  display:flex;gap:4px;padding:8px;
+  background:rgba(0,0,0,0.5);overflow-x:auto;
+  scrollbar-width:thin;scrollbar-color:var(--cyan) transparent;
+}
+.gallery-thumb{
+  flex-shrink:0;width:56px;height:40px;
+  border:1px solid rgba(0,245,255,0.2);border-radius:2px;
+  overflow:hidden;cursor:none;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,245,255,0.05);font-size:.9rem;
+}
+.gallery-thumb.active{border-color:var(--cyan);box-shadow:0 0 8px rgba(0,245,255,0.4);}
+.gallery-thumb:hover{border-color:rgba(0,245,255,0.6);}
+
+/* RIGHT PANEL — Details */
+.modal-details-panel{
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  max-height:90vh;
+}
+.modal-header{
+  padding:1.25rem 1.5rem 1rem;
+  border-bottom:1px solid rgba(0,245,255,0.1);
+  flex-shrink:0;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;
+}
+.modal-project-id{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--green);letter-spacing:.2em;margin-bottom:.25rem;
+}
+.modal-project-name{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.2;
+}
+.modal-close{
+  width:32px;height:32px;flex-shrink:0;
+  background:rgba(255,0,144,0.1);border:1px solid rgba(255,0,144,0.3);
+  border-radius:2px;color:var(--pink);font-size:1.1rem;
+  cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-family:'Share Tech Mono',monospace;line-height:1;
+}
+.modal-close:hover{background:rgba(255,0,144,0.2);box-shadow:0 0 15px rgba(255,0,144,0.3);transform:rotate(90deg);}
+.modal-body{
+  flex:1;overflow-y:auto;padding:1.25rem 1.5rem;
+  scrollbar-width:thin;scrollbar-color:var(--purple) transparent;
+}
+.modal-body::-webkit-scrollbar{width:3px;}
+.modal-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px;}
+/* Detail sections */
+.detail-section{
+  margin-bottom:1.25rem;
+  padding-bottom:1.25rem;
+  border-bottom:1px solid rgba(0,245,255,0.07);
+}
+.detail-section:last-child{border-bottom:none;}
+.detail-label{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--cyan);letter-spacing:.2em;margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.detail-label::before{content:'//';color:var(--purple);}
+.detail-text{font-size:.9rem;color:var(--dim);line-height:1.7;}
+.detail-text strong{color:var(--text);}
+/* Tech stack pills in modal */
+.modal-tags{display:flex;flex-wrap:wrap;gap:.35rem;}
+.modal-tag{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  padding:.25rem .65rem;
+  border-radius:2px;letter-spacing:.08em;
+  transition:all .2s;
+}
+.modal-tag.cyan{background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.3);color:var(--cyan);}
+.modal-tag.purple{background:rgba(180,0,255,0.08);border:1px solid rgba(180,0,255,0.3);color:var(--purple);}
+.modal-tag.green{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);color:var(--green);}
+.modal-tag:hover{transform:scale(1.05);}
+/* Architecture block */
+.arch-block{
+  background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.1);
+  border-radius:4px;padding:1rem;font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;color:var(--cyan);line-height:2;
+  position:relative;overflow:hidden;
+}
+.arch-block::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple));
+}
+/* Metrics row */
+.modal-metrics{display:flex;gap:.75rem;flex-wrap:wrap;}
+.modal-metric{
+  flex:1;min-width:80px;
+  background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.15);
+  border-radius:4px;padding:.75rem;text-align:center;
+}
+.modal-metric-val{
+  font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;
+  color:var(--cyan);text-shadow:0 0 12px rgba(0,245,255,0.5);
+}
+.modal-metric-label{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--dim);margin-top:.2rem;}
+/* CTA row */
+.modal-cta{
+  padding:1rem 1.5rem;
+  border-top:1px solid rgba(0,245,255,0.1);
+  display:flex;gap:.75rem;flex-shrink:0;
+}
+.modal-cta a{text-decoration:none;}
+
+/* ═══════════════════════════════════════
+   HACKATHON MEMORY MODAL
+═══════════════════════════════════════ */
+#hack-modal-overlay{
+  position:fixed;inset:0;z-index:10000;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease,visibility .4s ease;
+  background:rgba(2,4,8,0.95);
+  backdrop-filter:blur(28px);
+}
+#hack-modal-overlay.active{opacity:1;visibility:visible;}
+#hack-modal{
+  position:relative;
+  width:100%;height:100vh;
+  overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--purple) transparent;
+}
+#hack-modal::-webkit-scrollbar{width:3px;}
+#hack-modal::-webkit-scrollbar-thumb{background:var(--purple);}
+/* Memory header */
+.mem-header{
+  padding:80px 2rem 3rem;
+  max-width:900px;margin:0 auto;
+  position:relative;
+  transform:translateY(30px);opacity:0;
+  transition:transform .6s ease .1s,opacity .6s ease .1s;
+}
+#hack-modal-overlay.active .mem-header{transform:translateY(0);opacity:1;}
+.mem-file-tag{
+  font-family:'Share Tech Mono',monospace;font-size:.65rem;
+  color:var(--purple);letter-spacing:.25em;margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.mem-file-tag::before{content:'';width:40px;height:1px;background:var(--purple);}
+.mem-title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.6rem,4vw,2.8rem);
+  color:#fff;line-height:1.1;margin-bottom:.5rem;
+  text-shadow:0 0 40px rgba(255,255,255,0.15);
+}
+.mem-org{
+  font-family:'Share Tech Mono',monospace;font-size:.8rem;
+  color:var(--cyan);letter-spacing:.1em;margin-bottom:1.5rem;
+}
+/* Floating close btn */
+.mem-close{
+  position:fixed;top:1.5rem;right:1.5rem;z-index:10;
+  width:42px;height:42px;
+  background:rgba(255,0,144,0.12);border:1px solid rgba(255,0,144,0.35);
+  border-radius:3px;color:var(--pink);font-size:1.2rem;
+  cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-family:'Share Tech Mono',monospace;
+  backdrop-filter:blur(10px);
+}
+.mem-close:hover{background:rgba(255,0,144,0.25);box-shadow:0 0 20px rgba(255,0,144,0.4);transform:rotate(90deg);}
+/* Memory content area */
+.mem-content{max-width:900px;margin:0 auto;padding:0 2rem 4rem;}
+/* STORY section */
+.mem-story{
+  display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;
+  margin-bottom:2.5rem;
+  transform:translateY(20px);opacity:0;
+  transition:transform .6s ease .25s,opacity .6s ease .25s;
+}
+#hack-modal-overlay.active .mem-story{transform:translateY(0);opacity:1;}
+@media(max-width:600px){.mem-story{grid-template-columns:1fr;}}
+.mem-card{
+  background:rgba(0,245,255,0.03);
+  border:1px solid rgba(0,245,255,0.12);
+  border-radius:4px;padding:1.25rem;
+  position:relative;
+}
+.mem-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.5;
+}
+.mem-card-label{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--purple);letter-spacing:.2em;margin-bottom:.6rem;
+}
+.mem-card-text{font-size:.9rem;color:var(--dim);line-height:1.7;}
+.mem-card-text strong{color:var(--text);}
+/* GALLERY grid — polaroid style */
+.mem-gallery-section{
+  margin-bottom:2.5rem;
+  transform:translateY(20px);opacity:0;
+  transition:transform .6s ease .4s,opacity .6s ease .4s;
+}
+#hack-modal-overlay.active .mem-gallery-section{transform:translateY(0);opacity:1;}
+.mem-gallery-label{
+  font-family:'Share Tech Mono',monospace;font-size:.65rem;
+  color:var(--cyan);letter-spacing:.2em;margin-bottom:1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.mem-gallery-label::before{content:'//';color:var(--purple);}
+.mem-polaroid-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:1rem;
+}
+.polaroid{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:2px;
+  padding:.6rem .6rem .4rem;
+  transition:transform .3s ease,box-shadow .3s ease;
+  cursor:none;
+  animation:floatPol 4s ease-in-out infinite;
+}
+.polaroid:nth-child(2n){animation-delay:.8s;animation-direction:reverse;}
+.polaroid:nth-child(3n){animation-delay:1.6s;}
+@keyframes floatPol{0%,100%{transform:translateY(0) rotate(var(--rot,0deg))}50%{transform:translateY(-5px) rotate(var(--rot,0deg))}}
+.polaroid:hover{transform:translateY(-8px) scale(1.04) rotate(0deg)!important;box-shadow:0 20px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,245,255,0.1);z-index:2;position:relative;}
+.polaroid-img{
+  width:100%;aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#000;margin-bottom:.5rem;
+  position:relative;
+}
+.polaroid-img img{width:100%;height:100%;object-fit:cover;}
+.polaroid-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;
+  position:relative;overflow:hidden;
+}
+.polaroid-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,245,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.05) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.pol-icon{font-size:1.8rem;position:relative;z-index:1;}
+.pol-label{font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--cyan);position:relative;z-index:1;letter-spacing:.08em;}
+.polaroid-caption{
+  font-family:'Share Tech Mono',monospace;font-size:.58rem;
+  color:rgba(255,255,255,0.4);text-align:center;padding:.15rem 0;
+}
+/* Certificate spotlight */
+.mem-cert-section{
+  margin-bottom:2.5rem;
+  transform:translateY(20px);opacity:0;
+  transition:transform .6s ease .55s,opacity .6s ease .55s;
+}
+#hack-modal-overlay.active .mem-cert-section{transform:translateY(0);opacity:1;}
+.cert-cards{display:flex;gap:1rem;flex-wrap:wrap;}
+.cert-card{
+  flex:1;min-width:200px;
+  background:linear-gradient(135deg,rgba(0,245,255,0.06),rgba(180,0,255,0.06));
+  border:1px solid rgba(0,245,255,0.2);border-radius:4px;
+  padding:1.25rem;display:flex;align-items:center;gap:.75rem;
+  transition:all .3s;cursor:none;
+  animation:floatPol 5s ease-in-out infinite;
+}
+.cert-card:hover{border-color:rgba(0,245,255,0.5);box-shadow:0 0 25px rgba(0,245,255,0.12);transform:translateY(-4px)!important;}
+.cert-icon{font-size:2rem;flex-shrink:0;}
+.cert-info{flex:1;}
+.cert-name{font-family:'Orbitron',monospace;font-size:.75rem;color:#fff;font-weight:700;margin-bottom:.2rem;}
+.cert-issuer{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--purple);}
+/* Highlights row */
+.mem-highlights{
+  display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;
+  transform:translateY(20px);opacity:0;
+  transition:transform .6s ease .65s,opacity .6s ease .65s;
+}
+#hack-modal-overlay.active .mem-highlights{transform:translateY(0);opacity:1;}
+.highlight-chip{
+  display:flex;align-items:center;gap:.4rem;
+  background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);
+  border-radius:20px;padding:.35rem .9rem;
+  font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--green);
+  animation:floatPol 4s ease-in-out infinite;
+}
+.highlight-chip:nth-child(2n){animation-delay:1s;}
+/* Timeline strip at top of memory */
+.mem-timeline-bar{
+  display:flex;align-items:center;gap:.5rem;
+  padding:1rem 2rem;max-width:900px;margin:0 auto;
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--dim);flex-wrap:wrap;
+  transform:translateY(10px);opacity:0;
+  transition:transform .5s ease .05s,opacity .5s ease .05s;
+}
+#hack-modal-overlay.active .mem-timeline-bar{transform:translateY(0);opacity:1;}
+.tl-step{display:flex;align-items:center;gap:.4rem;}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+.tl-sep{width:30px;height:1px;background:rgba(0,245,255,0.3);}
+/* Loading boot overlay for modals */
+.modal-boot{
+  position:absolute;inset:0;
+  background:var(--bg);z-index:20;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--cyan);
+  transition:opacity .3s ease;
+}
+.modal-boot.fade-out{opacity:0;pointer-events:none;}
+.boot-bar{width:200px;height:2px;background:rgba(0,245,255,0.1);border-radius:2px;overflow:hidden;margin-top:.75rem;}
+.boot-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:bootBarFill .6s ease forwards;box-shadow:0 0 8px var(--cyan);}
+@keyframes bootBarFill{to{width:100%}}
+/* Zoom overlay for gallery images */
+#img-zoom-overlay{
+  position:fixed;inset:0;z-index:20000;
+  background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all .3s ease;cursor:zoom-out;
+}
+#img-zoom-overlay.active{opacity:1;visibility:visible;}
+#img-zoom-overlay img{max-width:90vw;max-height:90vh;object-fit:contain;border:1px solid rgba(0,245,255,0.2);}
+/* Mobile responsive for modals */
+@media(max-width:700px){
+  #project-modal{grid-template-columns:1fr;max-height:95vh;}
+  .modal-gallery-panel{max-height:260px;}
+  .gallery-viewport{min-height:200px;}
+  .mem-story{grid-template-columns:1fr;}
+  .mem-polaroid-grid{grid-template-columns:repeat(2,1fr);}
+  .mem-header{padding:70px 1.25rem 2rem;}
+  .mem-content{padding:0 1.25rem 3rem;}
+}
 </style>
 </head>
 <body>
@@ -781,7 +1256,7 @@ footer{
       </div>
       <div class="project-btns" >
         <a href="https://github.com/yashitchugh/Artify-Bharat" class="proj-btn">⌥ GITHUB</a>
-        <a href="#" class="proj-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</a>
+        <button onclick="openProjectModal('artify')" class="proj-btn access-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</button>
       </div>
     </div>
 
@@ -799,7 +1274,7 @@ footer{
       </div>
       <div class="project-btns">
         <a href="https://github.com/yashitchugh/EdTech-Dashboard" class="proj-btn">⌥ GITHUB</a>
-        <a href="#" class="proj-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</a>
+        <button onclick="openProjectModal('edtech')" class="proj-btn access-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</button>
       </div>
     </div>
 
@@ -817,7 +1292,7 @@ footer{
       </div>
       <div class="project-btns">
         <a href="https://github.com/yashitchugh/MemNoX" class="proj-btn">⌥ GITHUB</a>
-        <a href="#" class="proj-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</a>
+        <button onclick="openProjectModal('memnox')" class="proj-btn access-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</button>
       </div>
     </div>
 
@@ -835,8 +1310,8 @@ footer{
 
     <div class="hack-item reveal">
       <div class="hack-dot"></div>
-      <div class="hack-card">
-        <div class="hack-name">◈ GEN AI EXCHANGE HACKATHON</div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genai')">
+        <div class="hack-name">◈ GEN AI EXCHANGE HACKATHON <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ GOOGLE CLOUD</div>
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Built Generative AI solutions on Google Cloud infrastructure. Competed against top engineering teams nationwide.</p>
         <div class="project-tags" style="margin-top:.75rem">
@@ -847,8 +1322,8 @@ footer{
 
     <div class="hack-item reveal reveal-delay-1">
       <div class="hack-dot" style="border-color:var(--purple);box-shadow:0 0 10px var(--purple)"></div>
-      <div class="hack-card">
-        <div class="hack-name" style="color:var(--purple)">◈ NEXHACK</div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('nexhack')">
+        <div class="hack-name" style="color:var(--purple)">◈ NEXHACK <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ GEETA UNIVERSITY</div>
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Intense hackathon sprint focusing on AI-powered solutions for real-world institutional problems.</p>
         <div class="project-tags" style="margin-top:.75rem">
@@ -859,8 +1334,8 @@ footer{
 
     <div class="hack-item reveal reveal-delay-2">
       <div class="hack-dot" style="border-color:var(--pink);box-shadow:0 0 10px var(--pink)"></div>
-      <div class="hack-card">
-        <div class="hack-name" style="color:var(--pink)">◈ AI FOR BHARAT</div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('aibharat')">
+        <div class="hack-name" style="color:var(--pink)">◈ AI FOR BHARAT <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ AMAZON WEB SERVICES</div>
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Deployed AI solutions on AWS infrastructure targeting India-specific social impact problems at scale.</p>
         <div class="project-tags" style="margin-top:.75rem">
@@ -871,8 +1346,8 @@ footer{
 
     <div class="hack-item reveal reveal-delay-3">
       <div class="hack-dot" style="border-color:var(--green);box-shadow:0 0 10px var(--green)"></div>
-      <div class="hack-card">
-        <div class="hack-name" style="color:var(--green)">◈ INNOVATE FOR IMPACT</div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('innovate')">
+        <div class="hack-name" style="color:var(--green)">◈ INNOVATE FOR IMPACT <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ IIIT DELHI</div>
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Premier ideathon at IIIT Delhi — presented data-driven, AI-backed innovation for measurable societal impact.</p>
         <div class="project-tags" style="margin-top:.75rem">
@@ -883,8 +1358,8 @@ footer{
 
     <div class="hack-item reveal">
       <div class="hack-dot" style="border-color:var(--blue);box-shadow:0 0 10px var(--blue)"></div>
-      <div class="hack-card">
-        <div class="hack-name" style="color:var(--blue)">◈ GEN AI FOR DEV: HYPE TO DAILY CODING</div>
+      <div class="hack-card hack-card-clickable" onclick="openHackathonMemory('genaidev')">
+        <div class="hack-name" style="color:var(--blue)">◈ GEN AI FOR DEV: HYPE TO DAILY CODING <span class="hack-open-hint">// OPEN MEMORY ▶</span></div>
         <div class="hack-org">⚡ FEATURED EVENT / SPEAKER SESSION</div>
         <p style="margin-top:.5rem;font-size:.85rem;color:var(--dim)">Participated in high-signal developer event on integrating Generative AI into real coding workflows and production systems.</p>
         <div class="project-tags" style="margin-top:.75rem">
@@ -959,6 +1434,51 @@ footer{
   <div>© 2025 · CSE AI & DATA SCIENCE · B.TECH · ALL SYSTEMS NOMINAL</div>
   <div style="margin-top:.5rem;color:rgba(90,122,138,.4)">BUILT WITH: Python Brain + AI Soul + Founder Fire</div>
 </footer>
+
+<!-- ═══════════ PROJECT MODAL HTML ═══════════ -->
+<div id="project-modal-overlay" role="dialog" aria-modal="true">
+  <div id="project-modal">
+    <div class="modal-corner-br"></div>
+    <!-- LEFT: Gallery -->
+    <div class="modal-gallery-panel">
+      <div class="gallery-viewport" id="gallery-viewport">
+        <div class="gallery-scan"></div>
+        <!-- slides injected by JS -->
+        <button class="gallery-arrow left" id="gallery-prev">‹</button>
+        <button class="gallery-arrow right" id="gallery-next">›</button>
+        <div class="gallery-controls" id="gallery-dots"></div>
+      </div>
+      <div class="gallery-thumbs" id="gallery-thumbs"></div>
+    </div>
+    <!-- RIGHT: Details -->
+    <div class="modal-details-panel">
+      <div class="modal-header">
+        <div>
+          <div class="modal-project-id" id="modal-pid">// PROJECT_ID</div>
+          <div class="modal-project-name" id="modal-pname">PROJECT NAME</div>
+        </div>
+        <button class="modal-close" id="modal-close-btn">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body-content"><!-- injected --></div>
+      <div class="modal-cta" id="modal-cta"><!-- injected --></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HACKATHON MEMORY MODAL HTML ═══════════ -->
+<div id="hack-modal-overlay" role="dialog" aria-modal="true">
+  <div id="hack-modal">
+    <button class="mem-close" id="hack-close-btn">✕</button>
+    <div class="mem-timeline-bar" id="mem-timeline-bar"><!-- injected --></div>
+    <div class="mem-header" id="mem-header"><!-- injected --></div>
+    <div class="mem-content" id="mem-content"><!-- injected --></div>
+  </div>
+</div>
+
+<!-- ═══════════ ZOOM OVERLAY ═══════════ -->
+<div id="img-zoom-overlay" onclick="closeZoom()">
+  <img id="zoom-img" src="" alt="Zoomed">
+</div>
 
 <script>
 // ── CURSOR ──
@@ -1068,6 +1588,529 @@ const observer=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:.12});
 reveals.forEach(r=>observer.observe(r));
+
+/* ═══════════════════════════════════════════════════════
+   PROJECT DATA
+═══════════════════════════════════════════════════════ */
+const PROJECTS = {
+  artify: {
+    id: 'PRJ_001 // ARTIFY_BHARAT',
+    name: 'ARTIFY BHARAT',
+    github: 'https://github.com/yashitchugh/Artify-Bharat',
+    slides: [
+      { icon: '🎨', label: 'ARTIFY BHARAT', sub: 'AI Art Generation Platform', color: '#00f5ff' },
+      { icon: '🖼️', label: 'STYLE TRANSFER', sub: 'Traditional → Digital Art', color: '#b400ff' },
+      { icon: '🤖', label: 'DIFFUSION MODEL', sub: 'Text-to-Image Pipeline', color: '#ff0090' },
+      { icon: '🌐', label: 'FULL STACK UI', sub: 'Django + REST API', color: '#00ff88' },
+    ],
+    metrics: [
+      { val: '12+', label: 'ART STYLES' },
+      { val: '3ms', label: 'API LATENCY' },
+      { val: '5K+', label: 'IMGS GEN.' },
+    ],
+    details: {
+      problem: 'Indian traditional art forms like Madhubani, Warli, and Tanjore are largely inaccessible to digital creators. No AI tool celebrated Bharat\'s cultural heritage through generative models.',
+      solution: 'Built an end-to-end Gen AI platform that transforms text prompts and reference images into culturally authentic Indian art styles using fine-tuned diffusion models and neural style transfer.',
+      tech: [
+        { label: 'Stable Diffusion', cls: 'cyan' }, { label: 'Python', cls: 'cyan' },
+        { label: 'Django', cls: 'purple' }, { label: 'REST API', cls: 'purple' },
+        { label: 'PIL / OpenCV', cls: 'green' }, { label: 'LoRA Fine-tuning', cls: 'green' },
+        { label: 'Hugging Face', cls: 'cyan' }, { label: 'MongoDB', cls: 'purple' },
+      ],
+      arch: `USER → [ React UI ] → [ Django REST API ]
+                           ↓
+              [ Diffusion Pipeline (LoRA) ]
+                           ↓
+         [ Style Transfer Module ] → [ Image CDN ]
+                           ↓
+              [ MongoDB — Session + History ]`,
+      challenges: 'Fine-tuning stable diffusion on a curated Indian art dataset with limited GPU compute required aggressive optimization — mixed precision training, gradient checkpointing, and LoRA adapters to fit within memory constraints.',
+      learned: 'Deep understanding of diffusion model internals, LoRA fine-tuning strategies, and the importance of culturally curated datasets for domain-specific generation quality.',
+      future: 'Video-to-art generation, AR filter integration for Instagram/Snapchat, and a marketplace for artists to monetize AI-enhanced traditional artworks.',
+    }
+  },
+  edtech: {
+    id: 'PRJ_002 // EDTECH_PLATFORM',
+    name: 'EDTECH PLATFORM',
+    github: 'https://github.com/yashitchugh/EdTech-Dashboard',
+    slides: [
+      { icon: '📚', label: 'EDTECH PLATFORM', sub: 'AI-Powered Learning System', color: '#00f5ff' },
+      { icon: '📊', label: 'POWER BI DASH', sub: 'Real-Time Analytics', color: '#b400ff' },
+      { icon: '🧠', label: 'ML RECOMMENDATIONS', sub: 'Adaptive Learning Paths', color: '#00ff88' },
+      { icon: '⚡', label: 'DJANGO BACKEND', sub: 'MongoDB + REST APIs', color: '#ff0090' },
+    ],
+    metrics: [
+      { val: '92%', label: 'ENGAGEMENT↑' },
+      { val: '40+', label: 'ML FEATURES' },
+      { val: '3', label: 'DASHBOARDS' },
+    ],
+    details: {
+      problem: 'Students receive generic course content regardless of their pace, learning style, or knowledge gaps. Instructors lack real-time insights into student performance to intervene early.',
+      solution: 'Full-stack intelligent platform with ML-driven content personalization, adaptive assessments that adjust difficulty dynamically, and Power BI dashboards giving instructors live performance analytics.',
+      tech: [
+        { label: 'Django', cls: 'cyan' }, { label: 'Python ML', cls: 'cyan' },
+        { label: 'MongoDB', cls: 'purple' }, { label: 'Power BI', cls: 'purple' },
+        { label: 'scikit-learn', cls: 'green' }, { label: 'REST APIs', cls: 'green' },
+        { label: 'Pandas', cls: 'cyan' }, { label: 'NumPy', cls: 'purple' },
+      ],
+      arch: `[ Student Interface ] ←→ [ Django REST API ]
+                        ↓
+          [ ML Engine: Content Recommender ]
+          [ Adaptive Assessment Module    ]
+                        ↓
+          [ MongoDB — User + Course Data  ]
+                        ↓
+          [ Power BI — Live Dashboards    ]`,
+      challenges: 'Building a real-time recommendation engine that adapts within a single session required maintaining student state efficiently. Cold-start problem for new users solved with collaborative filtering fallbacks.',
+      learned: 'Productionizing ML models within Django, designing schema-flexible MongoDB structures for multi-tenant education data, and Power BI data pipeline architecture.',
+      future: 'LLM-powered Socratic tutoring chatbot, automated curriculum generation from syllabus PDFs, and gamification layer with leaderboards and achievement badges.',
+    }
+  },
+  memnox: {
+    id: 'PRJ_003 // MEMNOX',
+    name: 'MEMNOX',
+    github: 'https://github.com/yashitchugh/MemNoX',
+    slides: [
+      { icon: '🧬', label: 'MEMNOX', sub: 'Memory Augmentation OS', color: '#b400ff' },
+      { icon: '🔍', label: 'VECTOR SEARCH', sub: 'Semantic Memory Retrieval', color: '#00f5ff' },
+      { icon: '🤖', label: 'LLM REASONING', sub: 'Context-Aware Q&A', color: '#ff0090' },
+      { icon: '📡', label: 'EMBEDDINGS', sub: 'Knowledge Indexing Engine', color: '#00ff88' },
+    ],
+    metrics: [
+      { val: '<50ms', label: 'RETRIEVAL' },
+      { val: '∞', label: 'MEMORY CAP.' },
+      { val: '97%', label: 'RECALL ACC.' },
+    ],
+    details: {
+      problem: 'Human memory is lossy and unstructured. There\'s no intelligent personal knowledge base that can answer questions about your own past notes, ideas, and experiences with context-aware reasoning.',
+      solution: 'Built MemNoX — an AI companion that captures any input (text, links, notes), encodes them as vector embeddings, stores in a vector DB, and uses LLM chains to answer semantic queries about your personal knowledge graph.',
+      tech: [
+        { label: 'Flask', cls: 'cyan' }, { label: 'LangChain', cls: 'cyan' },
+        { label: 'OpenAI API', cls: 'purple' }, { label: 'Vector DB (FAISS)', cls: 'purple' },
+        { label: 'Sentence Transformers', cls: 'green' }, { label: 'Python', cls: 'green' },
+        { label: 'ChromaDB', cls: 'cyan' }, { label: 'React UI', cls: 'purple' },
+      ],
+      arch: `INPUT → [ Chunker + Embedder (SentenceTransformer) ]
+                        ↓
+              [ FAISS / ChromaDB Vector Store ]
+                        ↓
+     QUERY → [ Semantic Retrieval (Top-K) ]
+                        ↓
+             [ LLM Chain (GPT-4) + Context ]
+                        ↓
+              [ Synthesized Answer + Sources ]`,
+      challenges: 'Designing efficient chunking strategies that preserve semantic context across long documents. Managing embedding dimensionality vs. retrieval speed trade-offs at scale without GPU acceleration.',
+      learned: 'Deep hands-on with RAG architecture, vector database indexing strategies, prompt engineering for retrieval-augmented generation, and the nuances of semantic similarity scoring.',
+      future: 'Multimodal memory (images, audio), browser extension for automatic web capture, federated personal knowledge graph, and collaborative memory spaces for teams.',
+    }
+  }
+};
+
+/* ═══════════════════════════════════════════════════════
+   HACKATHON DATA
+═══════════════════════════════════════════════════════ */
+const HACKATHONS = {
+  genai: {
+    title: 'GEN AI EXCHANGE HACKATHON',
+    org: '⚡ GOOGLE CLOUD',
+    color: '#00f5ff',
+    timeline: ['REGISTRATION', 'IDEATION', 'BUILD SPRINT', 'DEMO DAY', 'RESULTS'],
+    story: {
+      problem: 'Designing a <strong>production-grade Generative AI solution</strong> on Google Cloud infrastructure within a time-boxed hackathon sprint against top national engineering teams.',
+      built: 'A <strong>context-aware AI assistant</strong> leveraging Vertex AI and Gemini APIs — deployed on Cloud Run with a real-time streaming interface, integrated with Google Cloud Storage and BigQuery for data.',
+      role: '<strong>Lead AI Engineer & Full-Stack Developer</strong> — architected the LLM pipeline, built the Flask API backend, and designed the frontend interaction model.',
+      result: 'Successfully competed against teams from premier engineering institutions. Gained deep Google Cloud certification-level exposure and built a deployable production AI product.',
+    },
+    gallery: [
+      { icon: '☁️', label: 'GOOGLE CLOUD', sub: 'Vertex AI + Gemini' },
+      { icon: '🤖', label: 'AI ASSISTANT', sub: 'Real-time Streaming' },
+      { icon: '🚀', label: 'CLOUD RUN', sub: 'Production Deploy' },
+      { icon: '👥', label: 'TEAM SPRINT', sub: '48hr Build' },
+    ],
+    certs: [
+      { icon: '🏅', name: 'PARTICIPATION CERTIFICATE', issuer: 'Google Cloud' },
+      { icon: '☁️', name: 'GEN AI EXPERIENCE', issuer: 'Google Cloud Platform' },
+    ],
+    highlights: ['☁️ Google Cloud APIs', '⚡ Vertex AI + Gemini', '🚀 Cloud Run Deploy', '⏱ 48hr Sprint', '🤖 Production LLM App'],
+  },
+  nexhack: {
+    title: 'NEXHACK',
+    org: '⚡ GEETA UNIVERSITY',
+    color: '#b400ff',
+    timeline: ['PROBLEM STMT', 'TEAM FORM', 'HACKING', 'PRESENTATION', 'JUDGING'],
+    story: {
+      problem: 'Build <strong>AI-powered solutions</strong> for real institutional and administrative problems faced by universities — from student tracking to resource optimization.',
+      built: 'An <strong>intelligent campus management platform</strong> combining ML-based attendance analytics, automated timetable optimization, and a student performance prediction dashboard.',
+      role: '<strong>Full-Stack Developer & ML Engineer</strong> — built the Django backend, ML prediction models using scikit-learn, and integrated Power BI for administrator dashboards.',
+      result: '<strong>Competed and presented</strong> to a panel of industry judges. Received strong feedback on the product completeness and real-world applicability of the solution.',
+    },
+    gallery: [
+      { icon: '🎓', label: 'CAMPUS AI', sub: 'Institutional Platform' },
+      { icon: '📊', label: 'ML DASHBOARD', sub: 'Student Analytics' },
+      { icon: '⚡', label: 'DJANGO APP', sub: 'Full-Stack Build' },
+      { icon: '🏛️', label: 'GEETA UNIV.', sub: 'Hackathon Venue' },
+    ],
+    certs: [
+      { icon: '🏅', name: 'NEXHACK PARTICIPANT', issuer: 'Geeta University' },
+      { icon: '🎯', name: 'AI SOLUTIONS TRACK', issuer: 'NexHack 2024' },
+    ],
+    highlights: ['🏛️ University Hackathon', '🤖 AI + Full Stack', '📊 Power BI Dashboards', '⚡ Django Backend', '🎓 Real Institution Problem'],
+  },
+  aibharat: {
+    title: 'AI FOR BHARAT',
+    org: '⚡ AMAZON WEB SERVICES',
+    color: '#ff0090',
+    timeline: ['CHALLENGE', 'IDEATION', 'AWS BUILD', 'DEMO', 'EVALUATION'],
+    story: {
+      problem: 'Deploy scalable <strong>AI solutions on AWS</strong> that address India-specific social impact problems — healthcare access, agricultural insights, or education equity.',
+      built: 'A <strong>ML-powered agricultural advisory system</strong> deployed on AWS SageMaker — crop disease detection from images using a fine-tuned EfficientNet model, with SMS alerts via AWS SNS for low-connectivity rural farmers.',
+      role: '<strong>ML Engineer & AWS Architect</strong> — model training pipeline, SageMaker deployment, API Gateway + Lambda integration, and SNS notification system.',
+      result: 'Successfully deployed a <strong>production ML endpoint on AWS infrastructure</strong> with end-to-end inference pipeline. Strong social impact framing appreciated by evaluators.',
+    },
+    gallery: [
+      { icon: '🌾', label: 'AGRI AI', sub: 'Crop Disease Detection' },
+      { icon: '☁️', label: 'AWS SAGEMAKER', sub: 'ML Production Deploy' },
+      { icon: '📱', label: 'SMS ALERTS', sub: 'AWS SNS Integration' },
+      { icon: '🇮🇳', label: 'BHARAT IMPACT', sub: 'Social Innovation' },
+    ],
+    certs: [
+      { icon: '🏅', name: 'AI FOR BHARAT CERTIFICATE', issuer: 'Amazon Web Services' },
+      { icon: '☁️', name: 'AWS BUILDER RECOGNITION', issuer: 'AWS India' },
+    ],
+    highlights: ['🇮🇳 Social Impact Focus', '☁️ AWS SageMaker Deploy', '🌾 AgriTech Domain', '📱 SNS + Lambda', '🤖 EfficientNet Fine-tune'],
+  },
+  innovate: {
+    title: 'INNOVATE FOR IMPACT',
+    org: '⚡ IIIT DELHI',
+    color: '#00ff88',
+    timeline: ['BRIEF', 'RESEARCH', 'PROTOTYPE', 'PITCHING', 'AWARDS'],
+    story: {
+      problem: 'Present a <strong>data-driven, AI-backed innovation</strong> addressing measurable societal challenges — evaluated by IIIT Delhi faculty and industry experts.',
+      built: 'A comprehensive <strong>urban traffic & pollution prediction system</strong> — combining IoT sensor simulation, real-time data analysis with Python, and a predictive ML dashboard showing city-level environmental impact forecasts.',
+      role: '<strong>Data Science Lead & Presenter</strong> — data pipeline design, ML model development (LSTM + ARIMA hybrid), visualization layer, and lead presenter in the ideathon pitch.',
+      result: '<strong>Presented at IIIT Delhi</strong> to a distinguished panel. Recognized for depth of research, data methodology, and clarity of societal impact narrative.',
+    },
+    gallery: [
+      { icon: '🌆', label: 'URBAN AI', sub: 'Traffic + Pollution Model' },
+      { icon: '📡', label: 'IOT SIMULATION', sub: 'Sensor Data Pipeline' },
+      { icon: '📈', label: 'LSTM + ARIMA', sub: 'Hybrid Forecasting' },
+      { icon: '🏫', label: 'IIIT DELHI', sub: 'Premier Ideathon' },
+    ],
+    certs: [
+      { icon: '🏅', name: 'INNOVATE FOR IMPACT', issuer: 'IIIT Delhi' },
+      { icon: '🎯', name: 'DATA SCIENCE TRACK', issuer: 'IIIT Delhi Ideathon' },
+    ],
+    highlights: ['🏫 IIIT Delhi Stage', '📊 Data Science Focus', '🌆 Urban Tech Solution', '📈 LSTM + ARIMA Model', '🎤 Ideathon Pitch'],
+  },
+  genaidev: {
+    title: 'GEN AI FOR DEV',
+    org: '⚡ FEATURED SPEAKER EVENT',
+    color: '#0080ff',
+    timeline: ['REGISTRATION', 'SESSIONS', 'WORKSHOPS', 'NETWORKING', 'CERTIFICATION'],
+    story: {
+      problem: 'Bridging the gap between <strong>Gen AI hype</strong> and practical day-to-day developer workflows — understanding where LLMs actually fit in production coding pipelines.',
+      built: 'Attended high-signal sessions on <strong>Copilot, Cursor, and LLM-assisted development</strong> — built a personal toolkit of AI-augmented workflows including prompt-driven test generation, automated code review, and RAG-based documentation search.',
+      role: '<strong>Active Participant & Workshop Attendee</strong> — hands-on labs, speaker Q&A, and peer developer discussions on production AI tooling integration.',
+      result: 'Expanded professional network with senior developers and AI researchers. Gained actionable frameworks for <strong>integrating Gen AI into daily coding</strong> that directly improved project development speed by 3x.',
+    },
+    gallery: [
+      { icon: '🎤', label: 'SPEAKER SESSIONS', sub: 'Industry Experts' },
+      { icon: '⚡', label: 'AI DEV TOOLS', sub: 'Copilot + Cursor' },
+      { icon: '🔬', label: 'WORKSHOPS', sub: 'Hands-on Labs' },
+      { icon: '🤝', label: 'NETWORKING', sub: 'Dev Community' },
+    ],
+    certs: [
+      { icon: '🏅', name: 'EVENT PARTICIPATION', issuer: 'Gen AI for Dev 2024' },
+      { icon: '⚡', name: 'GEN AI PRACTITIONER', issuer: 'Featured Event' },
+    ],
+    highlights: ['🎤 Live Speaker Sessions', '⚡ AI Dev Tooling', '🔬 Hands-on Workshops', '🤝 Dev Community', '📚 Production AI Workflows'],
+  },
+};
+
+/* ═══════════════════════════════════════════════════════
+   GALLERY STATE
+═══════════════════════════════════════════════════════ */
+let currentSlide = 0;
+let currentSlides = [];
+
+function renderGallery(slides) {
+  currentSlides = slides;
+  currentSlide = 0;
+  const vp = document.getElementById('gallery-viewport');
+  // remove existing slides
+  vp.querySelectorAll('.gallery-slide').forEach(s => s.remove());
+  const dotsEl = document.getElementById('gallery-dots');
+  const thumbsEl = document.getElementById('gallery-thumbs');
+  dotsEl.innerHTML = '';
+  thumbsEl.innerHTML = '';
+
+  slides.forEach((s, i) => {
+    // Main slide
+    const slide = document.createElement('div');
+    slide.className = 'gallery-slide' + (i===0?' active':'');
+    slide.innerHTML = `
+      <div class="gallery-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${s.color}15,transparent 70%)">
+        <div class="gp-icon">${s.icon}</div>
+        <div class="gp-label">${s.label}</div>
+        <div class="gp-sub">${s.sub}</div>
+      </div>`;
+    slide.onclick = () => openZoom(s.icon, s.label);
+    vp.insertBefore(slide, vp.querySelector('.gallery-scan'));
+
+    // Dot
+    const dot = document.createElement('div');
+    dot.className = 'gallery-dot' + (i===0?' active':'');
+    dot.onclick = () => goSlide(i);
+    dotsEl.appendChild(dot);
+
+    // Thumb
+    const thumb = document.createElement('div');
+    thumb.className = 'gallery-thumb' + (i===0?' active':'');
+    thumb.innerHTML = `<span style="font-size:1.2rem">${s.icon}</span>`;
+    thumb.onclick = () => goSlide(i);
+    thumbsEl.appendChild(thumb);
+  });
+}
+
+function goSlide(idx) {
+  const slides = document.querySelectorAll('#gallery-viewport .gallery-slide');
+  const dots = document.querySelectorAll('#gallery-dots .gallery-dot');
+  const thumbs = document.querySelectorAll('#gallery-thumbs .gallery-thumb');
+  slides[currentSlide].classList.add('prev');
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  thumbs[currentSlide].classList.remove('active');
+  setTimeout(() => slides[currentSlide]?.classList.remove('prev'), 500);
+  currentSlide = (idx + currentSlides.length) % currentSlides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+  thumbs[currentSlide].classList.add('active');
+}
+
+document.getElementById('gallery-prev').onclick = () => goSlide(currentSlide - 1);
+document.getElementById('gallery-next').onclick = () => goSlide(currentSlide + 1);
+
+// Swipe support
+let touchStartX = 0;
+document.getElementById('gallery-viewport').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.getElementById('gallery-viewport').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) goSlide(currentSlide + (dx < 0 ? 1 : -1));
+});
+
+/* ═══════════════════════════════════════════════════════
+   OPEN PROJECT MODAL
+═══════════════════════════════════════════════════════ */
+function openProjectModal(id) {
+  const p = PROJECTS[id];
+  if (!p) return;
+
+  document.getElementById('modal-pid').textContent = '// ' + p.id;
+  document.getElementById('modal-pname').textContent = p.name;
+
+  renderGallery(p.slides);
+
+  // Build details HTML
+  const d = p.details;
+  document.getElementById('modal-body-content').innerHTML = `
+    <div class="modal-metrics">${p.metrics.map(m=>`
+      <div class="modal-metric">
+        <div class="modal-metric-val">${m.val}</div>
+        <div class="modal-metric-label">${m.label}</div>
+      </div>`).join('')}
+    </div>
+
+    <div class="detail-section" style="margin-top:1.25rem">
+      <div class="detail-label">PROBLEM STATEMENT</div>
+      <div class="detail-text">${d.problem}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">SOLUTION & APPROACH</div>
+      <div class="detail-text">${d.solution}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">TECH STACK</div>
+      <div class="modal-tags">${d.tech.map(t=>`<span class="modal-tag ${t.cls}">${t.label}</span>`).join('')}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">ARCHITECTURE</div>
+      <div class="arch-block"><pre style="font-family:inherit;white-space:pre-wrap;line-height:1.8">${d.arch}</pre></div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">CHALLENGES FACED</div>
+      <div class="detail-text">${d.challenges}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">WHAT I LEARNED</div>
+      <div class="detail-text">${d.learned}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">FUTURE PLANS</div>
+      <div class="detail-text">${d.future}</div>
+    </div>
+  `;
+
+  document.getElementById('modal-cta').innerHTML = `
+    <a href="${p.github}" target="_blank" class="btn-primary" style="font-size:.65rem;padding:.65rem 1.25rem;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)">⌥ VIEW ON GITHUB</a>
+    <button onclick="closeProjectModal()" class="btn-secondary" style="font-size:.65rem;padding:.65rem 1.25rem;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)">✕ CLOSE MODULE</button>
+  `;
+
+  const ov = document.getElementById('project-modal-overlay');
+  ov.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal() {
+  document.getElementById('project-modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close-btn').onclick = closeProjectModal;
+document.getElementById('project-modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeProjectModal();
+});
+
+/* ═══════════════════════════════════════════════════════
+   OPEN HACKATHON MEMORY
+═══════════════════════════════════════════════════════ */
+function openHackathonMemory(id) {
+  const h = HACKATHONS[id];
+  if (!h) return;
+
+  // Timeline bar
+  document.getElementById('mem-timeline-bar').innerHTML =
+    h.timeline.map((step, i) => `
+      <div class="tl-step">
+        <div class="tl-dot" style="background:${h.color};box-shadow:0 0 6px ${h.color}"></div>
+        <span style="color:${h.color}">${step}</span>
+      </div>
+      ${i < h.timeline.length-1 ? '<div class="tl-sep"></div>' : ''}
+    `).join('');
+
+  // Header
+  document.getElementById('mem-header').innerHTML = `
+    <div class="mem-file-tag" style="color:${h.color}">// MEMORY_FILE.LOG — LOADING EXPERIENCE</div>
+    <div class="mem-title">${h.title}</div>
+    <div class="mem-org" style="color:${h.color}">${h.org}</div>
+  `;
+
+  // Content
+  const s = h.story;
+  document.getElementById('mem-content').innerHTML = `
+    <!-- Story Grid -->
+    <div class="mem-story">
+      <div class="mem-card">
+        <div class="mem-card-label" style="color:${h.color}">// THE CHALLENGE</div>
+        <div class="mem-card-text">${s.problem}</div>
+      </div>
+      <div class="mem-card">
+        <div class="mem-card-label" style="color:${h.color}">// WHAT WE BUILT</div>
+        <div class="mem-card-text">${s.built}</div>
+      </div>
+      <div class="mem-card">
+        <div class="mem-card-label" style="color:${h.color}">// MY ROLE</div>
+        <div class="mem-card-text">${s.role}</div>
+      </div>
+      <div class="mem-card" style="border-color:rgba(0,255,136,0.2)">
+        <div class="mem-card-label" style="color:var(--green)">// RESULT & ACHIEVEMENT</div>
+        <div class="mem-card-text">${s.result}</div>
+      </div>
+    </div>
+
+    <!-- Memory Gallery -->
+    <div class="mem-gallery-section">
+      <div class="mem-gallery-label">MEMORY GALLERY</div>
+      <div class="mem-polaroid-grid">
+        ${h.gallery.map((g, i) => {
+          const rots = [-3, 2, -1.5, 2.5, -2, 1];
+          const rot = rots[i % rots.length];
+          return `
+          <div class="polaroid" style="--rot:${rot}deg">
+            <div class="polaroid-img">
+              <div class="polaroid-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${h.color}20,transparent 70%)">
+                <span class="pol-icon">${g.icon}</span>
+                <span class="pol-label">${g.label}</span>
+              </div>
+            </div>
+            <div class="polaroid-caption">${g.sub}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- Certificates -->
+    <div class="mem-cert-section">
+      <div class="mem-gallery-label">CERTIFICATES & RECOGNITION</div>
+      <div class="cert-cards">
+        ${h.certs.map(c => `
+          <div class="cert-card">
+            <div class="cert-icon">${c.icon}</div>
+            <div class="cert-info">
+              <div class="cert-name">${c.name}</div>
+              <div class="cert-issuer" style="color:${h.color}">${c.issuer}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Highlights -->
+    <div class="mem-highlights">
+      ${h.highlights.map(hl => `<div class="highlight-chip">${hl}</div>`).join('')}
+    </div>
+  `;
+
+  const ov = document.getElementById('hack-modal-overlay');
+  ov.classList.add('active');
+  document.getElementById('hack-modal').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeHackathonMemory() {
+  document.getElementById('hack-modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('hack-close-btn').onclick = closeHackathonMemory;
+
+/* ═══════════════════════════════════════════════════════
+   ZOOM
+═══════════════════════════════════════════════════════ */
+function openZoom(icon, label) {
+  // For placeholder visuals just show the emoji big
+  const z = document.getElementById('img-zoom-overlay');
+  const img = document.getElementById('zoom-img');
+  // Create a canvas-based image of the icon
+  img.style.display = 'none';
+  z.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;cursor:zoom-out" onclick="closeZoom()">
+      <div style="font-size:8rem">${icon}</div>
+      <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);letter-spacing:.2em;font-size:.8rem">${label}</div>
+      <div style="font-family:'Share Tech Mono',monospace;color:var(--dim);font-size:.6rem">CLICK TO CLOSE // ESC TO EXIT</div>
+    </div>`;
+  z.classList.add('active');
+}
+
+function closeZoom() {
+  document.getElementById('img-zoom-overlay').classList.remove('active');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ESC KEY
+═══════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeZoom();
+    closeProjectModal();
+    closeHackathonMemory();
+  }
+});
 </script>
 </body>
 </html>
