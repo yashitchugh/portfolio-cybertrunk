@@ -702,6 +702,7 @@ footer{
   opacity:0;transition:opacity .5s ease,transform .5s ease;
   transform:translateX(60px);
   cursor:zoom-in;
+  width:100%;height:100%;
 }
 .gallery-slide.active{opacity:1;transform:translateX(0);}
 .gallery-slide.prev{opacity:0;transform:translateX(-60px);}
@@ -709,9 +710,10 @@ footer{
   width:100%;height:100%;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;
+  position:absolute;inset:0;
 }
 .gallery-img-wrap img{
-  width:100%;height:100%;object-fit:cover;
+  width:100%;height:100%;object-fit:cover;display:block;
 }
 /* Placeholder visuals when no real images */
 .gallery-placeholder{
@@ -997,7 +999,7 @@ footer{
   overflow:hidden;background:#000;margin-bottom:.5rem;
   position:relative;
 }
-.polaroid-img img{width:100%;height:100%;object-fit:cover;}
+.polaroid-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .polaroid-placeholder{
   width:100%;height:100%;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;
@@ -1026,14 +1028,43 @@ footer{
   flex:1;min-width:200px;
   background:linear-gradient(135deg,rgba(0,245,255,0.06),rgba(180,0,255,0.06));
   border:1px solid rgba(0,245,255,0.2);border-radius:4px;
-  padding:1.25rem;display:flex;align-items:center;gap:.75rem;
+  overflow:hidden;
   transition:all .3s;cursor:none;
   animation:floatPol 5s ease-in-out infinite;
+  display:flex;flex-direction:column;
 }
-.cert-card:hover{border-color:rgba(0,245,255,0.5);box-shadow:0 0 25px rgba(0,245,255,0.12);transform:translateY(-4px)!important;}
-.cert-icon{font-size:2rem;flex-shrink:0;}
+.cert-card.has-img{cursor:zoom-in;}
+.cert-card.has-img:hover{border-color:rgba(0,245,255,0.6);box-shadow:0 0 30px rgba(0,245,255,0.15),0 0 60px rgba(180,0,255,0.08);transform:translateY(-6px) scale(1.01)!important;}
+.cert-card:not(.has-img):hover{border-color:rgba(0,245,255,0.5);box-shadow:0 0 25px rgba(0,245,255,0.12);transform:translateY(-4px)!important;}
+.cert-img-preview{
+  width:100%;aspect-ratio:16/9;
+  overflow:hidden;position:relative;
+  background:#000;
+  border-bottom:1px solid rgba(0,245,255,0.1);
+}
+.cert-img-preview img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform .4s ease;
+}
+.cert-card.has-img:hover .cert-img-preview img{transform:scale(1.05);}
+.cert-img-preview::after{
+  content:'⊕ VIEW CERTIFICATE';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;font-size:.65rem;
+  letter-spacing:.2em;color:var(--cyan);
+  background:rgba(2,4,8,0.6);
+  opacity:0;transition:opacity .25s;
+}
+.cert-card.has-img:hover .cert-img-preview::after{opacity:1;}
+.cert-card-body{
+  padding:1rem 1.25rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.cert-icon{font-size:1.6rem;flex-shrink:0;}
 .cert-info{flex:1;}
-.cert-name{font-family:'Orbitron',monospace;font-size:.75rem;color:#fff;font-weight:700;margin-bottom:.2rem;}
+.cert-name{font-family:'Orbitron',monospace;font-size:.7rem;color:#fff;font-weight:700;margin-bottom:.2rem;}
 .cert-issuer{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--purple);}
 /* Highlights row */
 .mem-highlights{
@@ -1078,12 +1109,106 @@ footer{
 /* Zoom overlay for gallery images */
 #img-zoom-overlay{
   position:fixed;inset:0;z-index:20000;
-  background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;visibility:hidden;transition:all .3s ease;cursor:zoom-out;
+  background:rgba(2,4,8,0.97);
+  backdrop-filter:blur(24px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:opacity .35s ease, visibility .35s ease;
+  cursor:zoom-out;
+  padding:2rem;
 }
 #img-zoom-overlay.active{opacity:1;visibility:visible;}
-#img-zoom-overlay img{max-width:90vw;max-height:90vh;object-fit:contain;border:1px solid rgba(0,245,255,0.2);}
+#img-zoom-overlay.active .zoom-img-wrap{transform:scale(1);opacity:1;}
+
+/* Grid bg inside zoom */
+#img-zoom-overlay::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,245,255,0.02) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+/* Top scan line on open */
+#img-zoom-overlay::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);
+  opacity:0;
+}
+#img-zoom-overlay.active::after{
+  opacity:1;animation:zoomScan .6s ease forwards;
+}
+@keyframes zoomScan{0%{transform:scaleX(0);opacity:0}50%{opacity:1}100%{transform:scaleX(1);opacity:0}}
+
+.zoom-img-wrap{
+  position:relative;
+  max-width:min(1000px,90vw);
+  max-height:80vh;
+  transform:scale(.92);opacity:0;
+  transition:transform .4s cubic-bezier(0.23,1,0.32,1), opacity .4s ease;
+  border:1px solid rgba(0,245,255,0.2);
+  box-shadow:
+    0 0 0 1px rgba(0,245,255,0.05),
+    0 0 60px rgba(0,245,255,0.1),
+    0 0 120px rgba(180,0,255,0.08),
+    0 40px 80px rgba(0,0,0,0.8);
+}
+/* Corner decorations on zoomed image */
+.zoom-img-wrap::before,.zoom-img-wrap::after{
+  content:'';position:absolute;width:20px;height:20px;z-index:2;pointer-events:none;
+}
+.zoom-img-wrap::before{top:-1px;left:-1px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);}
+.zoom-img-wrap::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--purple);border-right:2px solid var(--purple);}
+
+.zoom-img-wrap img{
+  display:block;
+  max-width:min(1000px,90vw);
+  max-height:80vh;
+  width:auto;height:auto;
+  object-fit:contain;
+}
+/* Scan line over image */
+.zoom-scan{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+}
+
+.zoom-meta{
+  margin-top:1.25rem;
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  transform:translateY(8px);opacity:0;
+  transition:transform .4s ease .15s, opacity .4s ease .15s;
+}
+#img-zoom-overlay.active .zoom-meta{transform:translateY(0);opacity:1;}
+
+.zoom-label{
+  font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;
+  color:var(--cyan);letter-spacing:.25em;
+  text-shadow:0 0 15px rgba(0,245,255,0.5);
+}
+.zoom-hint{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--dim);letter-spacing:.15em;
+  display:flex;align-items:center;gap:.75rem;
+}
+.zoom-hint span{
+  display:flex;align-items:center;gap:.3rem;
+}
+.zoom-close-btn{
+  position:absolute;top:1.25rem;right:1.25rem;
+  width:36px;height:36px;
+  background:rgba(255,0,144,0.1);border:1px solid rgba(255,0,144,0.3);
+  border-radius:2px;color:var(--pink);font-size:1.1rem;
+  cursor:none;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-family:'Share Tech Mono',monospace;
+  z-index:3;
+}
+.zoom-close-btn:hover{background:rgba(255,0,144,0.25);box-shadow:0 0 20px rgba(255,0,144,0.4);transform:rotate(90deg);}
+.zoom-id{
+  position:absolute;top:1.25rem;left:1.25rem;
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--dim);letter-spacing:.15em;
+}
 /* Mobile responsive for modals */
 @media(max-width:700px){
   #project-modal{grid-template-columns:1fr;max-height:95vh;}
@@ -1477,7 +1602,20 @@ footer{
 
 <!-- ═══════════ ZOOM OVERLAY ═══════════ -->
 <div id="img-zoom-overlay" onclick="closeZoom()">
-  <img id="zoom-img" src="" alt="Zoomed">
+  <div class="zoom-id">IMG_VIEWER // NEURAL_OS</div>
+  <button class="zoom-close-btn" onclick="closeZoom()">✕</button>
+  <div class="zoom-img-wrap" id="zoom-img-wrap" onclick="event.stopPropagation()">
+    <div class="zoom-scan"></div>
+    <img id="zoom-img" src="" alt=""/>
+  </div>
+  <div class="zoom-meta">
+    <div class="zoom-label" id="zoom-label"></div>
+    <div class="zoom-hint">
+      <span>ESC — CLOSE</span>
+      <span style="color:rgba(0,245,255,0.2)">|</span>
+      <span>CLICK OUTSIDE — EXIT</span>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1598,10 +1736,10 @@ const PROJECTS = {
     name: 'ARTIFY BHARAT',
     github: 'https://github.com/yashitchugh/Artify-Bharat',
     slides: [
-      { icon: '🎨', label: 'ARTIFY BHARAT', sub: 'AI Art Generation Platform', color: '#00f5ff' },
-      { icon: '🖼️', label: 'STYLE TRANSFER', sub: 'Traditional → Digital Art', color: '#b400ff' },
-      { icon: '🤖', label: 'DIFFUSION MODEL', sub: 'Text-to-Image Pipeline', color: '#ff0090' },
-      { icon: '🌐', label: 'FULL STACK UI', sub: 'Django + REST API', color: '#00ff88' },
+      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/src/hackathon/ai%20for%20bharat/Screenshot%202026-01-21%20232832.png', label: 'ARTIFY BHARAT', sub: 'AI Art Generation Platform', color: '#00f5ff' },
+      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/src/hackathon/ai%20for%20bharat/Screenshot%202026-05-03%20182547.png', label: 'STYLE TRANSFER', sub: 'Traditional → Digital Art', color: '#b400ff' },
+      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/path/to/file', label: 'DIFFUSION MODEL', sub: 'Text-to-Image Pipeline', color: '#ff0090' },
+      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/path/to/file', label: 'FULL STACK UI', sub: 'Django + REST API', color: '#00ff88' },
     ],
     metrics: [
       { val: '12+', label: 'ART STYLES' },
@@ -1722,13 +1860,13 @@ const HACKATHONS = {
       result: 'Successfully competed against teams from premier engineering institutions. Gained deep Google Cloud certification-level exposure and built a deployable production AI product.',
     },
     gallery: [
-      { icon: '☁️', label: 'GOOGLE CLOUD', sub: 'Vertex AI + Gemini' },
-      { icon: '🤖', label: 'AI ASSISTANT', sub: 'Real-time Streaming' },
-      { icon: '🚀', label: 'CLOUD RUN', sub: 'Production Deploy' },
-      { icon: '👥', label: 'TEAM SPRINT', sub: '48hr Build' },
+      { img:'src/hackathon/gen ai echange/1sthome.png', label: 'GOOGLE CLOUD', sub: 'Vertex AI + Gemini' },
+      { img:'src/hackathon/gen ai echange/home.png', label: 'AI ASSISTANT', sub: 'Real-time Streaming' },
+      { img:'src/hackathon/gen ai echange/razopay.png', label: 'CLOUD RUN', sub: 'Production Deploy' },
+      { img:'src/hackathon/gen ai echange/chat.png', label: 'TEAM SPRINT', sub: '48hr Build' },
     ],
     certs: [
-      { icon: '🏅', name: 'PARTICIPATION CERTIFICATE', issuer: 'Google Cloud' },
+      { img:'src/hackathon/gen ai echange/crtf.jpg', name: 'PARTICIPATION CERTIFICATE', issuer: 'Google Cloud' },
       { icon: '☁️', name: 'GEN AI EXPERIENCE', issuer: 'Google Cloud Platform' },
     ],
     highlights: ['☁️ Google Cloud APIs', '⚡ Vertex AI + Gemini', '🚀 Cloud Run Deploy', '⏱ 48hr Sprint', '🤖 Production LLM App'],
@@ -1745,10 +1883,10 @@ const HACKATHONS = {
       result: '<strong>Competed and presented</strong> to a panel of industry judges. Received strong feedback on the product completeness and real-world applicability of the solution.',
     },
     gallery: [
-      { icon: '🎓', label: 'CAMPUS AI', sub: 'Institutional Platform' },
-      { icon: '📊', label: 'ML DASHBOARD', sub: 'Student Analytics' },
-      { icon: '⚡', label: 'DJANGO APP', sub: 'Full-Stack Build' },
-      { icon: '🏛️', label: 'GEETA UNIV.', sub: 'Hackathon Venue' },
+      { img:'src/hackathon/nexhack/selfe.png', label: 'CAMPUS AI', sub: 'Institutional Platform' },
+      { img:'src/hackathon/nexhack/laptop.png', label: 'ML DASHBOARD', sub: 'Student Analytics' },
+      { img:'src/hackathon/nexhack/swag.png', label: 'DJANGO APP', sub: 'Full-Stack Build' },
+      { img:'src/hackathon/nexhack/cofee.png', label: 'GEETA UNIV.', sub: 'Hackathon Venue' },
     ],
     certs: [
       { icon: '🏅', name: 'NEXHACK PARTICIPANT', issuer: 'Geeta University' },
@@ -1768,13 +1906,13 @@ const HACKATHONS = {
       result: 'Successfully deployed a <strong>production ML endpoint on AWS infrastructure</strong> with end-to-end inference pipeline. Strong social impact framing appreciated by evaluators.',
     },
     gallery: [
-      { icon: '🌾', label: 'AGRI AI', sub: 'Crop Disease Detection' },
-      { icon: '☁️', label: 'AWS SAGEMAKER', sub: 'ML Production Deploy' },
-      { icon: '📱', label: 'SMS ALERTS', sub: 'AWS SNS Integration' },
-      { icon: '🇮🇳', label: 'BHARAT IMPACT', sub: 'Social Innovation' },
+      { img:'src/hackathon/ai for bharat/session.png', label: 'AGRI AI', sub: 'Crop Disease Detection' },
+      { img:'src/hackathon/ai for bharat/why.png', label: 'AWS SAGEMAKER', sub: 'ML Production Deploy' },
+      { img:'src/hackathon/ai for bharat/identity.png', label: 'SMS ALERTS', sub: 'AWS SNS Integration' },
+      { img:'src/hackathon/ai for bharat/voice.jpeg', label: 'BHARAT IMPACT', sub: 'Social Innovation' },
     ],
     certs: [
-      { icon: '🏅', name: 'AI FOR BHARAT CERTIFICATE', issuer: 'Amazon Web Services' },
+      { img:'src/hackathon/ai for bharat/crtf.png', name: 'AI FOR BHARAT CERTIFICATE', issuer: 'Amazon Web Services' },
       { icon: '☁️', name: 'AWS BUILDER RECOGNITION', issuer: 'AWS India' },
     ],
     highlights: ['🇮🇳 Social Impact Focus', '☁️ AWS SageMaker Deploy', '🌾 AgriTech Domain', '📱 SNS + Lambda', '🤖 EfficientNet Fine-tune'],
@@ -1791,10 +1929,10 @@ const HACKATHONS = {
       result: '<strong>Presented at IIIT Delhi</strong> to a distinguished panel. Recognized for depth of research, data methodology, and clarity of societal impact narrative.',
     },
     gallery: [
-      { icon: '🌆', label: 'URBAN AI', sub: 'Traffic + Pollution Model' },
-      { icon: '📡', label: 'IOT SIMULATION', sub: 'Sensor Data Pipeline' },
-      { icon: '📈', label: 'LSTM + ARIMA', sub: 'Hybrid Forecasting' },
-      { icon: '🏫', label: 'IIIT DELHI', sub: 'Premier Ideathon' },
+      { img:'src/hackathon/innovate/snap8.jpeg', label: 'URBAN AI', sub: 'Traffic + Pollution Model' },
+      { img:'src/hackathon/innovate/snap5.jpeg', label: 'IOT SIMULATION', sub: 'Sensor Data Pipeline' },
+      { img:'src/hackathon/innovate/snap4.jpeg', label: 'LSTM + ARIMA', sub: 'Hybrid Forecasting' },
+      { img:'src/hackathon/innovate/snap3.jpeg', label: 'IIIT DELHI', sub: 'Premier Ideathon' },
     ],
     certs: [
       { icon: '🏅', name: 'INNOVATE FOR IMPACT', issuer: 'IIIT Delhi' },
@@ -1814,8 +1952,8 @@ const HACKATHONS = {
       result: 'Expanded professional network with senior developers and AI researchers. Gained actionable frameworks for <strong>integrating Gen AI into daily coding</strong> that directly improved project development speed by 3x.',
     },
     gallery: [
-      { icon: '🎤', label: 'SPEAKER SESSIONS', sub: 'Industry Experts' },
-      { icon: '⚡', label: 'AI DEV TOOLS', sub: 'Copilot + Cursor' },
+      { img:'src/hackathon/microsoft/pass_event.jpeg', label: 'SPEAKER SESSIONS', sub: 'Industry Experts' },
+      { img:'src/hackathon/microsoft/event1.jpeg', label: 'AI DEV TOOLS', sub: 'Copilot + Cursor' },
       { icon: '🔬', label: 'WORKSHOPS', sub: 'Hands-on Labs' },
       { icon: '🤝', label: 'NETWORKING', sub: 'Dev Community' },
     ],
@@ -1848,13 +1986,20 @@ function renderGallery(slides) {
     // Main slide
     const slide = document.createElement('div');
     slide.className = 'gallery-slide' + (i===0?' active':'');
-    slide.innerHTML = `
-      <div class="gallery-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${s.color}15,transparent 70%)">
-        <div class="gp-icon">${s.icon}</div>
-        <div class="gp-label">${s.label}</div>
-        <div class="gp-sub">${s.sub}</div>
-      </div>`;
-    slide.onclick = () => openZoom(s.icon, s.label);
+    if (s.img) {
+      slide.innerHTML = `
+        <div class="gallery-img-wrap">
+          <img src="${s.img}" alt="${s.label}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:.5rem\\'><span style=\\'font-size:2rem\\'>◧</span><span style=\\'font-family:Share Tech Mono,monospace;font-size:.65rem;color:#5a7a8a\\'>${s.label}</span></div>'"/>
+        </div>`;
+    } else {
+      slide.innerHTML = `
+        <div class="gallery-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${s.color}15,transparent 70%)">
+          <div class="gp-icon">${s.icon || '◧'}</div>
+          <div class="gp-label">${s.label}</div>
+          <div class="gp-sub">${s.sub}</div>
+        </div>`;
+    }
+    slide.onclick = () => s.img ? openZoom(s.img, s.label, true) : openZoom(s.icon, s.label, false);
     vp.insertBefore(slide, vp.querySelector('.gallery-scan'));
 
     // Dot
@@ -1866,7 +2011,9 @@ function renderGallery(slides) {
     // Thumb
     const thumb = document.createElement('div');
     thumb.className = 'gallery-thumb' + (i===0?' active':'');
-    thumb.innerHTML = `<span style="font-size:1.2rem">${s.icon}</span>`;
+    thumb.innerHTML = s.img
+      ? `<img src="${s.img}" alt="${s.label}" style="width:100%;height:100%;object-fit:cover"/>`
+      : `<span style="font-size:1.2rem">${s.icon || '◧'}</span>`;
     thumb.onclick = () => goSlide(i);
     thumbsEl.appendChild(thumb);
   });
@@ -2030,13 +2177,20 @@ function openHackathonMemory(id) {
         ${h.gallery.map((g, i) => {
           const rots = [-3, 2, -1.5, 2.5, -2, 1];
           const rot = rots[i % rots.length];
+          const inner = g.img
+            ? `<img src="${g.img}" alt="${g.label}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"/>
+               <div class="polaroid-placeholder" style="display:none;background:radial-gradient(ellipse at 50% 0%,${h.color}20,transparent 70%)">
+                 <span class="pol-icon">◧</span>
+                 <span class="pol-label">${g.label}</span>
+               </div>`
+            : `<div class="polaroid-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${h.color}20,transparent 70%)">
+                 <span class="pol-icon">${g.icon || '◧'}</span>
+                 <span class="pol-label">${g.label}</span>
+               </div>`;
           return `
-          <div class="polaroid" style="--rot:${rot}deg">
-            <div class="polaroid-img">
-              <div class="polaroid-placeholder" style="background:radial-gradient(ellipse at 50% 0%,${h.color}20,transparent 70%)">
-                <span class="pol-icon">${g.icon}</span>
-                <span class="pol-label">${g.label}</span>
-              </div>
+          <div class="polaroid" style="--rot:${rot}deg" ${g.img ? `onclick="openZoom('${g.img}','${g.label}',true)"` : ''}>
+            <div class="polaroid-img" style="${g.img ? 'cursor:zoom-in' : ''}">
+              ${inner}
             </div>
             <div class="polaroid-caption">${g.sub}</div>
           </div>`;
@@ -2049,11 +2203,17 @@ function openHackathonMemory(id) {
       <div class="mem-gallery-label">CERTIFICATES & RECOGNITION</div>
       <div class="cert-cards">
         ${h.certs.map(c => `
-          <div class="cert-card">
-            <div class="cert-icon">${c.icon}</div>
-            <div class="cert-info">
-              <div class="cert-name">${c.name}</div>
-              <div class="cert-issuer" style="color:${h.color}">${c.issuer}</div>
+          <div class="cert-card ${c.img ? 'has-img' : ''}" ${c.img ? `onclick="openZoom('${c.img}','${c.name}',true)"` : ''}>
+            ${c.img ? `
+            <div class="cert-img-preview">
+              <img src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/>
+            </div>` : ''}
+            <div class="cert-card-body">
+              <div class="cert-icon">${c.icon || '🏅'}</div>
+              <div class="cert-info">
+                <div class="cert-name">${c.name}</div>
+                <div class="cert-issuer" style="color:${h.color}">${c.issuer}</div>
+              </div>
             </div>
           </div>
         `).join('')}
@@ -2082,23 +2242,45 @@ document.getElementById('hack-close-btn').onclick = closeHackathonMemory;
 /* ═══════════════════════════════════════════════════════
    ZOOM
 ═══════════════════════════════════════════════════════ */
-function openZoom(icon, label) {
-  // For placeholder visuals just show the emoji big
+function openZoom(src, label, isImage) {
   const z = document.getElementById('img-zoom-overlay');
+  const wrap = document.getElementById('zoom-img-wrap');
   const img = document.getElementById('zoom-img');
-  // Create a canvas-based image of the icon
-  img.style.display = 'none';
-  z.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;cursor:zoom-out" onclick="closeZoom()">
-      <div style="font-size:8rem">${icon}</div>
-      <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);letter-spacing:.2em;font-size:.8rem">${label}</div>
-      <div style="font-family:'Share Tech Mono',monospace;color:var(--dim);font-size:.6rem">CLICK TO CLOSE // ESC TO EXIT</div>
-    </div>`;
-  z.classList.add('active');
+  const lbl = document.getElementById('zoom-label');
+
+  if (isImage) {
+    wrap.style.display = '';
+    img.src = src;
+    img.alt = label;
+    lbl.textContent = label;
+    z.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  } else {
+    // emoji/icon fallback — show centered big
+    wrap.style.display = 'none';
+    lbl.textContent = label;
+    z.innerHTML = `
+      <div class="zoom-id">IMG_VIEWER // NEURAL_OS</div>
+      <button class="zoom-close-btn" onclick="closeZoom()">✕</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem">
+        <div style="font-size:7rem;filter:drop-shadow(0 0 30px rgba(0,245,255,0.4))">${src}</div>
+        <div class="zoom-label">${label}</div>
+        <div class="zoom-hint" style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.15em">ESC — CLOSE</div>
+      </div>`;
+    z.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
 function closeZoom() {
-  document.getElementById('img-zoom-overlay').classList.remove('active');
+  const z = document.getElementById('img-zoom-overlay');
+  z.classList.remove('active');
+  document.body.style.overflow = '';
+  // reset after transition
+  setTimeout(() => {
+    const img = document.getElementById('zoom-img');
+    if (img) img.src = '';
+  }, 350);
 }
 
 /* ═══════════════════════════════════════════════════════
