@@ -197,6 +197,47 @@ section{
   position:relative;z-index:1;
   max-width:1200px;margin:0 auto;padding-left:2rem;padding-right:2rem;
 }
+.hero-layout{display:flex;align-items:center;justify-content:space-between;gap:3rem;width:100%;}
+.hero-text{flex:1;min-width:0;}
+.hero-profile{
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:.75rem;
+}
+.hero-profile-frame{
+  position:relative;width:230px;height:230px;
+}
+.hero-profile-frame::before{
+  content:'';position:absolute;inset:-3px;
+  border-radius:50%;
+  background:conic-gradient(var(--cyan),var(--purple),var(--cyan));
+  animation:spinRing 4s linear infinite;
+  z-index:0;
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.hero-profile-frame::after{
+  content:'';position:absolute;inset:2px;
+  border-radius:50%;background:var(--bg);z-index:1;
+}
+.hero-profile-img{
+  position:absolute;inset:6px;
+  border-radius:50%;
+  object-fit:cover;width:calc(100% - 12px);height:calc(100% - 12px);
+  z-index:2;
+  filter:brightness(.95) contrast(1.05);
+}
+.hero-profile-name{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:.85rem;letter-spacing:.2em;
+  color:#fff;text-align:center;
+  text-shadow:0 0 20px rgba(0,245,255,0.4);
+}
+.hero-profile-sub{
+  font-family:'Share Tech Mono',monospace;font-size:.6rem;
+  color:var(--cyan);letter-spacing:.15em;text-align:center;
+}
+@media(max-width:768px){
+  .hero-layout{flex-direction:column-reverse;gap:2rem;}
+  .hero-profile-frame{width:161px;height:161px;}
+}
 .hero-eyebrow{
   font-family:'Share Tech Mono',monospace;font-size:.75rem;
   color:var(--green);letter-spacing:.3em;margin-bottom:1.5rem;
@@ -213,7 +254,7 @@ section{
 }
 .hero-tagline{
   font-family:'Orbitron',monospace;font-weight:900;
-  font-size:clamp(2rem,5.5vw,4.5rem);
+  font-size:clamp(1.6rem,4vw,3.6rem);
   line-height:1.05;margin-bottom:1.5rem;
 }
 .hero-tagline .line1{
@@ -224,6 +265,7 @@ section{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
   filter:drop-shadow(0 0 20px rgba(0,245,255,0.5));
+  white-space:nowrap;
 }
 .hero-sub{
   font-size:1.1rem;color:var(--dim);max-width:560px;
@@ -1289,24 +1331,35 @@ footer{
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-eyebrow">INITIALIZING USER PROFILE /// AI_LAB_v2.1</div>
-  <div class="hero-name">STUDENT_ID: CSE_AI_DS // B.TECH 2ND YEAR</div>
-  <h1 class="hero-tagline">
-    <div class="line1">I don't just learn AI.</div>
-    <div class="line2"><span id="typing-target"></span><span class="typing-cursor"></span></div>
-  </h1>
-  <p class="hero-sub">
-    <strong>Builder. Hacker. Founder-in-training.</strong> Engineering the intersection of Generative AI, intelligent systems, and real-world impact — one deployment at a time.
-  </p>
-  <div class="hero-ctas">
-    <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">◈ ACCESS PROJECTS</button>
-    <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">◉ INITIALIZE CONTACT</button>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-val neon-text-cyan">3+</span><span class="stat-label">PROJECTS DEPLOYED</span></div>
-    <div class="stat"><span class="stat-val" style="color:var(--purple);text-shadow:0 0 20px var(--purple)">4+</span><span class="stat-label">HACKATHONS</span></div>
-    <div class="stat"><span class="stat-val" style="color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6)">#1</span><span class="stat-label">IIT GUW. LEADERBOARD</span></div>
-    <div class="stat"><span class="stat-val" style="color:var(--green);text-shadow:0 0 20px var(--green)">97.9</span><span class="stat-label">TOP SCORE</span></div>
+  <div class="hero-layout">
+    <div class="hero-text">
+      <div class="hero-eyebrow">INITIALIZING USER PROFILE /// AI_LAB_v2.1</div>
+      <div class="hero-name">STUDENT_ID: CSE_AI_DS // B.TECH 2ND YEAR</div>
+      <h1 class="hero-tagline">
+        <div class="line1">I don't just learn AI.</div>
+        <div class="line2"><span id="typing-target"></span><span class="typing-cursor"></span></div>
+      </h1>
+      <p class="hero-sub">
+        <strong>Builder. Hacker. Founder-in-training.</strong> Engineering the intersection of Generative AI, intelligent systems, and real-world impact — one deployment at a time.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">◈ ACCESS PROJECTS</button>
+        <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">◉ INITIALIZE CONTACT</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-val neon-text-cyan">3+</span><span class="stat-label">PROJECTS DEPLOYED</span></div>
+        <div class="stat"><span class="stat-val" style="color:var(--purple);text-shadow:0 0 20px var(--purple)">4+</span><span class="stat-label">HACKATHONS</span></div>
+        <div class="stat"><span class="stat-val" style="color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6)">#1</span><span class="stat-label">IIT GUW. LEADERBOARD</span></div>
+        <div class="stat"><span class="stat-val" style="color:var(--green);text-shadow:0 0 20px var(--green)">97.9</span><span class="stat-label">TOP SCORE</span></div>
+      </div>
+    </div>
+    <div class="hero-profile">
+      <div class="hero-profile-frame">
+        <img class="hero-profile-img" src="src/profile/img.jpeg" alt="Yashit Chugh"/>
+      </div>
+      <div class="hero-profile-name">YASHIT CHUGH</div>
+      <div class="hero-profile-sub">CSE · AI & DATA SCIENCE</div>
+    </div>
   </div>
 </section>
 
@@ -1402,12 +1455,13 @@ footer{
         <div class="project-name">◈ ARTIFY BHARAT</div>
         <div class="hackathon-badge">HACKATHON BUILD</div>
       </div>
-      <p class="project-desc">AI-powered platform celebrating Indian art and culture through Generative AI. Creates, transforms, and reimagines traditional Bhartiya art forms using diffusion models and style transfer.</p>
+      <p class="project-desc">Full-stack three-tier platform empowering Indian artisans — voice onboarding in native languages, AI-authenticated Digital Craft Passport, multilingual story generation via Gemini AI, and a verified handmade marketplace with a LangGraph AI shopping assistant.</p>
       <div class="project-tags">
-        <span class="tag">GENERATIVE AI</span>
-        <span class="tag">ML</span>
-        <span class="tag">FULL STACK</span>
-        <span class="tag">PYTHON</span>
+        <span class="tag">NEXT.JS 16</span>
+        <span class="tag">DJANGO 6</span>
+        <span class="tag">FASTAPI</span>
+        <span class="tag">GEMINI AI</span>
+        <span class="tag">LANGCHAIN</span>
       </div>
       <div class="project-btns" >
         <a href="https://github.com/yashitchugh/Artify-Bharat" class="proj-btn">⌥ GITHUB</a>
@@ -1733,12 +1787,12 @@ function drawParticles(){
 drawParticles();
 
 // ── TYPING ANIMATION ──
-const phrases=[
-  'I build systems with it.',
-  'I deploy it to production.',
-  'I compete at the top.',
-  'I ship real products.',
-  'I architect the future.',
+const phrases = [
+  'I build AI apps.',
+  'I deploy real systems.',
+  'I turn data into products.',
+  'I design smart experiences.',
+  'I solve real problems.',
 ];
 let pi=0,ci=0,deleting=false,typingEl=document.getElementById('typing-target');
 function type(){
@@ -1770,35 +1824,48 @@ const PROJECTS = {
     name: 'ARTIFY BHARAT',
     github: 'https://github.com/yashitchugh/Artify-Bharat',
     slides: [
-      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/src/hackathon/ai%20for%20bharat/Screenshot%202026-01-21%20232832.png', label: 'ARTIFY BHARAT', sub: 'AI Art Generation Platform', color: '#00f5ff' },
-      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/src/hackathon/ai%20for%20bharat/Screenshot%202026-05-03%20182547.png', label: 'STYLE TRANSFER', sub: 'Traditional → Digital Art', color: '#b400ff' },
-      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/path/to/file', label: 'DIFFUSION MODEL', sub: 'Text-to-Image Pipeline', color: '#ff0090' },
-      { img:'https://raw.githubusercontent.com/yashitchugh/health_disease_repo/main/path/to/file', label: 'FULL STACK UI', sub: 'Django + REST API', color: '#00ff88' },
+      { img:'https://github.com/user-attachments/assets/f6aebb30-c5fe-46fe-b268-579c37494d4b', label: 'MARKETPLACE HOME', sub: 'AI-Powered Verified Marketplace', color: '#00f5ff' },
+      { img:'https://github.com/user-attachments/assets/cd884940-efc8-43f5-b6f0-aaabe13ffd08', label: 'ARTISAN DASHBOARD', sub: 'Real-Time Sales & Analytics', color: '#b400ff' },
+      { img:'https://github.com/user-attachments/assets/e6b6a395-c7d6-41b9-b426-2256a69697ff', label: 'DIGITAL CRAFT PASSPORT', sub: 'Blockchain-Verified Authenticity', color: '#ff0090' },
+      { icon: '🎙️', label: 'VOICE ONBOARDING', sub: 'Native Language Recording', color: '#00ff88' },
     ],
     metrics: [
-      { val: '12+', label: 'ART STYLES' },
-      { val: '3ms', label: 'API LATENCY' },
-      { val: '5K+', label: 'IMGS GEN.' },
+      { val: '94%', label: 'AI VERIFY ACC.' },
+      { val: '7+', label: 'LANGUAGES' },
+      { val: '3-TIER', label: 'ARCHITECTURE' },
     ],
     details: {
-      problem: 'Indian traditional art forms like Madhubani, Warli, and Tanjore are largely inaccessible to digital creators. No AI tool celebrated Bharat\'s cultural heritage through generative models.',
-      solution: 'Built an end-to-end Gen AI platform that transforms text prompts and reference images into culturally authentic Indian art styles using fine-tuned diffusion models and neural style transfer.',
+      problem: 'India\'s skilled artisans are locked out of digital commerce — no verified way to prove authenticity, language barriers block onboarding, and middlemen capture most profits leaving craftspeople underpaid.',
+      solution: 'Full-stack three-tier platform: artisans onboard via <strong>voice recordings in their native language</strong> (AssemblyAI transcription + Gemini AI story generation), every product gets an AI-authenticated <strong>Digital Craft Passport</strong>, and buyers get a curated verified marketplace with a LangGraph-powered AI shopping assistant.',
       tech: [
-        { label: 'Stable Diffusion', cls: 'cyan' }, { label: 'Python', cls: 'cyan' },
-        { label: 'Django', cls: 'purple' }, { label: 'REST API', cls: 'purple' },
-        { label: 'PIL / OpenCV', cls: 'green' }, { label: 'LoRA Fine-tuning', cls: 'green' },
-        { label: 'Hugging Face', cls: 'cyan' }, { label: 'MongoDB', cls: 'purple' },
+        { label: 'Next.js 16', cls: 'cyan' }, { label: 'React 18', cls: 'cyan' },
+        { label: 'Tailwind CSS', cls: 'cyan' }, { label: 'Django 6.0', cls: 'purple' },
+        { label: 'Django REST Framework', cls: 'purple' }, { label: 'SimpleJWT', cls: 'purple' },
+        { label: 'FastAPI', cls: 'green' }, { label: 'Google Gemini AI', cls: 'green' },
+        { label: 'AssemblyAI', cls: 'green' }, { label: 'LangChain', cls: 'cyan' },
+        { label: 'LangGraph', cls: 'cyan' }, { label: 'PostgreSQL', cls: 'purple' },
+        { label: 'Celery + Redis', cls: 'green' }, { label: 'OAuth (Google)', cls: 'purple' },
       ],
-      arch: `USER → [ React UI ] → [ Django REST API ]
-                           ↓
-              [ Diffusion Pipeline (LoRA) ]
-                           ↓
-         [ Style Transfer Module ] → [ Image CDN ]
-                           ↓
-              [ MongoDB — Session + History ]`,
-      challenges: 'Fine-tuning stable diffusion on a curated Indian art dataset with limited GPU compute required aggressive optimization — mixed precision training, gradient checkpointing, and LoRA adapters to fit within memory constraints.',
-      learned: 'Deep understanding of diffusion model internals, LoRA fine-tuning strategies, and the importance of culturally curated datasets for domain-specific generation quality.',
-      future: 'Video-to-art generation, AR filter integration for Instagram/Snapchat, and a marketplace for artists to monetize AI-enhanced traditional artworks.',
+      arch: `[ Next.js 16 Frontend — Artisan / Buyer / Passport Pages ]
+                        ↓ HTTP / Axios
+        ┌───────────────────────────────────────┐
+        │  Django 6 + DRF + JWT                 │
+        │  Auth · Products · Orders · Cart      │
+        │  Artisans · Customers · Admin Panel   │
+        └──────────────┬────────────────────────┘
+                       ↓
+        ┌──────────────────────────────────────┐
+        │  FastAPI Microservices               │
+        │  POST /process_audio                 │
+        │   → AssemblyAI Transcription         │
+        │   → Gemini AI Story Generation       │
+        │  LangGraph AI Chatbot (tool-calling) │
+        └──────────────────────────────────────┘
+                       ↓
+              [ SQLite / PostgreSQL ]`,
+      challenges: 'Orchestrating three independent services (Next.js, Django, FastAPI) with consistent JWT auth across all layers. Voice onboarding required chaining AssemblyAI transcription → Gemini rewrite in a single low-latency request while handling Indian language audio edge cases.',
+      learned: 'Three-tier microservice architecture, LangGraph stateful agent design with tool-calling, AssemblyAI Universal-2 model for multilingual transcription, and production-grade Django REST API design with nested routers and Celery async tasks.',
+      future: 'Blockchain-anchored Digital Craft Passport NFTs, AR product preview for buyers, WhatsApp-based artisan onboarding bot, and expansion to 22 scheduled Indian languages.',
     }
   },
   edtech: {
