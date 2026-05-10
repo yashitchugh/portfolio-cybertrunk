@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NEURAL//PORTFOLIO — AI Lab v2.1</title>
+<title>Yashit Chugh — ML & AI Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -183,7 +183,7 @@ section{
 .section-tag::before{content:'';width:30px;height:1px;background:var(--purple);}
 .section-title{
   font-family:'Orbitron',monospace;font-weight:900;
-  font-size:clamp(1.8rem,4vw,3rem);
+  font-size:clamp(1.6rem,3.5vw,2.4rem);
   background:linear-gradient(135deg,var(--cyan),var(--purple));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
@@ -235,7 +235,7 @@ section{
   color:var(--cyan);letter-spacing:.15em;text-align:center;
 }
 @media(max-width:768px){
-  .hero-layout{flex-direction:column-reverse;gap:2rem;}
+  .hero-layout{flex-direction:column-reverse;gap:1.5rem;}
   .hero-profile-frame{width:161px;height:161px;}
 }
 .hero-eyebrow{
@@ -266,7 +266,6 @@ section{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
   filter:drop-shadow(0 0 20px rgba(0,245,255,0.5));
-  white-space:nowrap;
 }
 .hero-sub{
   font-size:1rem;color:#a8c4d4;max-width:560px;
@@ -375,7 +374,7 @@ section{
 
 /* ── ABOUT ── */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
-@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:1.25rem;}}
 .about-text p{line-height:1.8;color:#a8c4d4;margin-bottom:1rem;font-size:1rem;}
 .about-text p strong{color:#e8f4f8;font-weight:600;}
 .about-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
@@ -606,7 +605,7 @@ section{
 
 /* ── CONTACT ── */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
-@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;gap:1.5rem;}}
 .contact-form{display:flex;flex-direction:column;gap:1rem;}
 .form-group{display:flex;flex-direction:column;gap:.4rem;}
 .form-label{
@@ -648,10 +647,10 @@ section{
 /* ── FOOTER ── */
 footer{
   position:relative;z-index:1;
-  text-align:center;padding:2rem;
-  border-top:1px solid var(--border);
-  font-family:'Share Tech Mono',monospace;font-size:.65rem;
-  color:var(--dim);letter-spacing:.1em;
+  text-align:center;padding:2.5rem 2rem;
+  border-top:1px solid rgba(0,245,255,0.2);
+  font-family:'Share Tech Mono',monospace;font-size:.68rem;
+  color:#7a9ab0;letter-spacing:.12em;
 }
 
 /* ── REVEAL ANIMATIONS ── */
@@ -672,7 +671,7 @@ footer{
 /* ── MOBILE NAV ── */
 @media(max-width:768px){
   .nav-links{display:none}
-  .hero-stats{gap:1.5rem}
+  .hero-stats{gap:1rem}
 }
 
 /* ── SCROLL BAR ── */
@@ -1319,6 +1318,106 @@ footer{
   .mem-header{padding:70px 1.25rem 2rem;}
   .mem-content{padding:0 1.25rem 3rem;}
 }
+
+/* ═══════════════════════════════════════
+   COMPREHENSIVE RESPONSIVE SYSTEM
+═══════════════════════════════════════ */
+
+/* Tablet — 768px to 1024px */
+@media(max-width:1024px){
+  section{padding:80px 1.5rem 3rem;}
+  .projects-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+  .skills-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+  .hero-stats{gap:2rem;}
+}
+
+/* Mobile — up to 768px */
+@media(max-width:768px){
+  /* Nav */
+  nav{padding:.75rem 1rem;}
+
+  /* Sections */
+  section{padding:80px 1rem 2.5rem;}
+
+  /* Hero */
+  .hero-layout{flex-direction:column-reverse;gap:1.25rem;text-align:center;}
+  .hero-text{align-items:center;display:flex;flex-direction:column;}
+  .hero-eyebrow{justify-content:center;font-size:.6rem;}
+  .hero-name{font-size:clamp(1.1rem,5vw,1.6rem);}
+  .hero-tagline{font-size:clamp(1.4rem,6vw,2.4rem);}
+  .hero-tagline .line2{white-space:normal;}
+  .hero-sub{font-size:.9rem;text-align:left;max-width:100%;}
+  .hero-ctas{justify-content:center;flex-wrap:wrap;gap:.75rem;}
+  .hero-stats{gap:1rem;justify-content:center;}
+  .stat-val{font-size:1.2rem;}
+  .hero-profile{align-items:center;}
+  .hero-profile-frame{width:140px;height:140px;}
+
+  /* About */
+  .about-grid{grid-template-columns:1fr;gap:1.25rem;}
+
+  /* Skills */
+  .skills-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.75rem;}
+  .skill-card{padding:1rem .75rem;}
+  .skill-icon{font-size:1.4rem;}
+
+  /* Achievement */
+  .achievement-card{padding:1.25rem 1rem;}
+  .ach-rank{font-size:clamp(1.6rem,8vw,2.8rem);}
+  .ach-title{font-size:clamp(.75rem,3vw,.95rem);}
+  .ach-score{padding:.5rem 1rem;gap:.5rem;}
+  .score-val{font-size:1.1rem;}
+  #achievement>div>div:last-child{grid-template-columns:repeat(2,1fr);}
+
+  /* Projects */
+  .projects-grid{grid-template-columns:1fr;gap:1rem;}
+  .project-card{padding:1.25rem;}
+  .project-name{font-size:.9rem;}
+
+  /* Hackathon timeline */
+  .hackathon-timeline::before{left:10px;}
+  .hack-item{padding-left:36px;gap:1rem;}
+  .hack-dot{left:3px;width:14px;height:14px;}
+  .hack-dot::after{width:5px;height:5px;}
+  .hack-card{padding:1rem;}
+  .hack-name{font-size:.75rem;}
+
+  /* Contact */
+  .contact-grid{grid-template-columns:1fr;gap:1.5rem;}
+  .form-input,.form-textarea{padding:.7rem;font-size:.9rem;}
+  .social-link{padding:.75rem 1rem;}
+
+  /* Buttons */
+  .btn-primary,.btn-secondary{font-size:.65rem;padding:.7rem 1.25rem;}
+  .btn-resume{padding:.7rem 1.25rem;font-size:.7rem;}
+
+  /* Section titles */
+  .section-title{font-size:clamp(1.4rem,6vw,2.2rem);}
+}
+
+/* Small phones — up to 480px */
+@media(max-width:480px){
+  section{padding:75px .75rem 2rem;}
+  nav{padding:.65rem .75rem;}
+  .hero-profile-frame{width:120px;height:120px;}
+  .hero-name{font-size:1rem;}
+  .skills-grid{grid-template-columns:repeat(3,1fr);gap:.5rem;}
+  .skill-card{padding:.75rem .5rem;}
+  .skill-icon{font-size:1.2rem;}
+  .skill-name{font-size:.55rem;}
+  .skill-cat{font-size:.5rem;}
+  .projects-grid{grid-template-columns:1fr;}
+  .project-btns{flex-wrap:wrap;}
+  .hero-stats{gap:.75rem;}
+  .stat-val{font-size:1.1rem;}
+  .stat-label{font-size:.55rem;}
+  #achievement>div>div:last-child{grid-template-columns:repeat(2,1fr);}
+  .hack-item{padding-left:28px;}
+  .mem-polaroid-grid{grid-template-columns:repeat(2,1fr);}
+  .cert-cards{flex-direction:column;}
+  .hero-ctas{flex-direction:column;align-items:stretch;}
+  .btn-resume{justify-content:center;}
+}
 </style>
 </head>
 <body>
@@ -1330,7 +1429,7 @@ footer{
 <!-- LOADING SCREEN -->
 <div id="loader">
   <div class="loader-grid"></div>
-  <div class="loader-logo">NEURAL<span>//</span>OS</div>
+  <div class="loader-logo">YASHIT<span>//</span>Portfolio</div>
   <div class="boot-lines" id="boot-lines"></div>
   <div class="progress-bar"><div class="progress-fill"></div></div>
 </div>
@@ -1341,7 +1440,7 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SYS<span>://</span>PORTFOLIO</div>
+  <div class="nav-logo">YASHIT<span></span></div>
   <ul class="nav-links">
     <li><a href="#hero">INIT</a></li>
     <li><a href="#about">ABOUT</a></li>
@@ -1353,7 +1452,7 @@ footer{
   </ul>
   <div class="nav-status">
     <div class="status-dot"></div>
-    SYSTEM ONLINE
+     ONLINE
   </div>
 </nav>
 
@@ -1381,7 +1480,7 @@ footer{
         </a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><span class="stat-val neon-text-cyan">5+</span><span class="stat-label">PROJECTS BUILT</span></div>
+        <div class="stat"><span class="stat-val neon-text-cyan">2+</span><span class="stat-label">PROJECTS BUILT</span></div>
         <div class="stat"><span class="stat-val" style="color:var(--purple);text-shadow:0 0 20px var(--purple)">5+</span><span class="stat-label">HACKATHONS</span></div>
         <div class="stat"><span class="stat-val" style="color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6)">#1</span><span class="stat-label">IIT GUW. LEADERBOARD</span></div>
         <div class="stat"><span class="stat-val" style="color:var(--green);text-shadow:0 0 20px var(--green)">3</span><span class="stat-label">INTERNSHIPS</span></div>
@@ -1401,8 +1500,8 @@ footer{
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="section-tag">SYSTEM_MODULE_01</div>
-  <h2 class="section-title">ABOUT.EXE</h2>
+  <div class="section-tag">WHO I AM</div>
+  <h2 class="section-title">About Me</h2>
   <div class="about-grid">
     <div class="glass-card reveal">
       <div class="corner-tl"></div><div class="corner-br"></div>
@@ -1453,9 +1552,9 @@ footer{
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="section-tag">SYSTEM_MODULE_02</div>
-  <h2 class="section-title">TECH_STACK.JSON</h2>
-  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem;">// LOADED MODULES & CAPABILITIES</p>
+  <div class="section-tag">TOOLS & TECHNOLOGIES</div>
+  <h2 class="section-title">Tech Stack</h2>
+  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem;">// Languages · Frameworks · AI/ML · Cloud</p>
   <div class="skills-grid">
     <div class="skill-card reveal"><span class="skill-icon">🐍</span><div class="skill-name">PYTHON</div><div class="skill-cat">LANGUAGE</div></div>
     <div class="skill-card reveal reveal-delay-1"><span class="skill-icon">➕</span><div class="skill-name">C++</div><div class="skill-cat">LANGUAGE</div></div>
@@ -1482,8 +1581,8 @@ footer{
 <!-- ACHIEVEMENT SPOTLIGHT -->
 <div id="achievement" style="padding:60px 0">
   <div class="achievement-wrap" style="max-width:1200px;margin:0 auto;padding:0 2rem">
-    <div class="section-tag" style="justify-content:center">PRIORITY_ALERT — CLASSIFIED_ACHIEVEMENTS</div>
-    <h2 class="section-title" style="text-align:center">UNLOCKED.LOG</h2>
+    <div class="section-tag" style="justify-content:center">HIGHLIGHT</div>
+    <h2 class="section-title" style="text-align:center">Achievements</h2>
 
     <!-- Hero achievement -->
     <div class="achievement-card reveal" style="margin-top:2rem">
@@ -1535,8 +1634,8 @@ footer{
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-tag">SYSTEM_MODULE_03</div>
-  <h2 class="section-title">PROJECTS.DB</h2>
-  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// QUERYING DEPLOYED SYSTEMS...</p>
+  <h2 class="section-title">Projects</h2>
+  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// Things I've built</p>
   <div class="projects-grid">
 
     <div class="project-card reveal" onclick="openProjectModal('artify')" style="cursor:none">
@@ -1576,7 +1675,7 @@ footer{
       </div>
     </div>
 
-    <div class="project-card reveal reveal-delay-2" onclick="openProjectModal('memnox')" style="cursor:none">
+    <div class="project-card reveal reveal-delay-2" style="cursor:default">
       <div class="project-header">
         <div class="project-name">◈ MEMNOX</div>
         <div class="hackathon-badge" style="border-color:rgba(180,0,255,0.5);color:var(--purple);background:rgba(180,0,255,0.08);animation:pulse 2s ease infinite;">⚙ IN PROGRESS</div>
@@ -1590,7 +1689,7 @@ footer{
       </div>
       <div class="project-btns">
         <a href="https://github.com/yashitchugh/MemNoX" class="proj-btn" onclick="event.stopPropagation()" target="_blank">⌥ GITHUB</a>
-        <button onclick="event.stopPropagation();openProjectModal('memnox')" class="proj-btn access-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</button>
+        <button onclick="event.stopPropagation();this.textContent='⚙ UNDER PROGRESS...';this.style.color='var(--purple)';this.style.borderColor='rgba(180,0,255,.6)';setTimeout(()=>{this.textContent='◉ ACCESS MODULE';this.style.color='';this.style.borderColor='';},2500)" class="proj-btn access-btn" style="color:var(--purple);border-color:rgba(180,0,255,.3)">◉ ACCESS MODULE</button>
       </div>
     </div>
 
@@ -1601,9 +1700,9 @@ footer{
 
 <!-- HACKATHONS -->
 <section id="hackathons">
-  <div class="section-tag">SYSTEM_MODULE_04</div>
-  <h2 class="section-title">BATTLE_LOG.TXT</h2>
-  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// COMPETITIVE INTELLIGENCE RECORD</p>
+  <div class="section-tag">HACKATHONS & EVENTS</div>
+  <h2 class="section-title">Battle Log</h2>
+  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// Every event that shaped me</p>
   <div class="hackathon-timeline">
 
     <div class="hack-item reveal">
@@ -1681,8 +1780,8 @@ footer{
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-tag">SYSTEM_MODULE_05</div>
-  <h2 class="section-title">OPEN_CHANNEL.SH</h2>
-  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// INITIATING SECURE CONNECTION...</p>
+  <h2 class="section-title">Get In Touch</h2>
+  <p style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;margin-bottom:2rem">// Open to internships, collabs & conversations</p>
   <div class="contact-grid">
     <div class="contact-form reveal">
       <div class="form-group">
@@ -1736,9 +1835,8 @@ footer{
 </section>
 
 <footer>
-  <div style="font-family:'Orbitron',monospace;color:var(--cyan);margin-bottom:.5rem;font-size:.8rem">NEURAL//PORTFOLIO v2.1</div>
-  <div>© 2025 · CSE AI & DATA SCIENCE · B.TECH · ALL SYSTEMS NOMINAL</div>
-  <div style="margin-top:.5rem;color:rgba(90,122,138,.4)">BUILT WITH: Python Brain + AI Soul + Founder Fire</div>
+  <div style="color:#c8e6f5;margin-bottom:.4rem">© 2025 · Designed & built by Yashit · All rights reserved</div>
+  <div style="color:#7a9ab0;font-size:.6rem">BUILT WITH · Python Brain · AI Soul · Founder Fire · Zero Sleep</div>
 </footer>
 
 <!-- ═══════════ PROJECT MODAL HTML ═══════════ -->
@@ -1813,13 +1911,13 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.le
 
 // ── BOOT SEQUENCE ──
 const bootLines=[
-  {text:'NEURAL//OS BOOTLOADER v3.7.2',status:'OK'},
-  {text:'Scanning AI modules...',status:'FOUND'},
-  {text:'Loading ML engine...',status:'READY'},
-  {text:'Initializing portfolio database...',status:'OK'},
-  {text:'Decrypting project files...',status:'SUCCESS'},
-  {text:'Establishing secure channel...',status:'ACTIVE'},
-  {text:'All systems nominal. Welcome.',status:'ONLINE'},
+  {text:'YASHIT//AI PORTFOLIO v1.0',status:'BOOTING'},
+  {text:'Loading ML & AI modules...',status:'READY'},
+  {text:'Connecting to IBM Watsonx...',status:'LINKED'},
+  {text:'Fetching hackathon memories...',status:'FOUND'},
+  {text:'Deploying projects to stage...',status:'LIVE'},
+  {text:'Resume unlocked. Swag loaded.',status:'✓'},
+  {text:'Welcome. Let\'s build something.',status:'GO'},
 ];
 const bootEl=document.getElementById('boot-lines');
 const loader=document.getElementById('loader');
@@ -1924,7 +2022,6 @@ const PROJECTS = {
       { img:'https://github.com/user-attachments/assets/f6aebb30-c5fe-46fe-b268-579c37494d4b', label: 'MARKETPLACE HOME', sub: 'AI-Powered Verified Marketplace', color: '#00f5ff' },
       { img:'https://github.com/user-attachments/assets/cd884940-efc8-43f5-b6f0-aaabe13ffd08', label: 'ARTISAN DASHBOARD', sub: 'Real-Time Sales & Analytics', color: '#b400ff' },
       { img:'https://github.com/user-attachments/assets/e6b6a395-c7d6-41b9-b426-2256a69697ff', label: 'DIGITAL CRAFT PASSPORT', sub: 'Blockchain-Verified Authenticity', color: '#ff0090' },
-      { icon: '🎙️', label: 'VOICE ONBOARDING', sub: 'Native Language Recording', color: '#00ff88' },
     ],
     metrics: [
       { val: '94%', label: 'AI VERIFY ACC.' },
@@ -1970,10 +2067,9 @@ const PROJECTS = {
     name: 'EDTECH PLATFORM',
     github: 'https://github.com/yashitchugh/EdTech-Dashboard',
     slides: [
-      { icon: '📚', label: 'EDTECH PLATFORM', sub: 'AI-Powered Learning System', color: '#00f5ff' },
-      { icon: '📊', label: 'POWER BI DASH', sub: 'Real-Time Analytics', color: '#b400ff' },
-      { icon: '🧠', label: 'ML RECOMMENDATIONS', sub: 'Adaptive Learning Paths', color: '#00ff88' },
-      { icon: '⚡', label: 'DJANGO BACKEND', sub: 'MongoDB + REST APIs', color: '#ff0090' },
+      { img:'src/project/edtech/Screenshot 2026-05-11 011153.png', label: 'EDTECH PLATFORM', sub: 'AI-Powered Learning System', color: '#00f5ff' },
+      { img:'src/project/edtech/Screenshot 2026-05-11 011246.png', label: 'POWER BI DASH', sub: 'Real-Time Analytics', color: '#b400ff' },
+      { img:'src/project/edtech/Screenshot 2026-05-11 011333.png', label: 'ML RECOMMENDATIONS', sub: 'Adaptive Learning Paths', color: '#00ff88' },
     ],
     metrics: [
       { val: '92%', label: 'ENGAGEMENT↑' },
@@ -2007,10 +2103,6 @@ const PROJECTS = {
     name: 'MEMNOX',
     github: 'https://github.com/yashitchugh/MemNoX',
     slides: [
-      { icon: '🧬', label: 'MEMNOX', sub: 'Memory Augmentation OS', color: '#b400ff' },
-      { icon: '🔍', label: 'VECTOR SEARCH', sub: 'Semantic Memory Retrieval', color: '#00f5ff' },
-      { icon: '🤖', label: 'LLM REASONING', sub: 'Context-Aware Q&A', color: '#ff0090' },
-      { icon: '📡', label: 'EMBEDDINGS', sub: 'Knowledge Indexing Engine', color: '#00ff88' },
     ],
     metrics: [
       { val: '<50ms', label: 'RETRIEVAL' },
@@ -2153,7 +2245,6 @@ const HACKATHONS = {
       { img:'src/hackathon/microsoft/pass_event.jpeg', label: 'EVENT PASS', sub: 'Microsoft · Feb 13' },
       { img:'src/hackathon/microsoft/event1.jpeg', label: 'GEN AI SESSIONS', sub: 'Hype to Daily Coding' },
       { img:'src/hackathon/microsoft/WhatsApp Image 2026-02-13 at 21.25.08.jpeg', label: 'ON THE DAY', sub: 'Feb 13, 2025' },
-      { icon: '🪞', label: 'THE MIRROR MOMENT', sub: 'My version vs the stage' },
     ],
     certs: [
       { icon: '🏅', name: 'EVENT PARTICIPATION', issuer: 'Microsoft · Gen AI for Dev' },
@@ -2173,10 +2264,7 @@ const HACKATHONS = {
       result: 'Biggest realization: <strong>learning tech isn\'t about knowing everything</strong> — it\'s about being curious and staying open to exploring new things. Still a beginner, still figuring things out… but definitely moving forward 🚀',
     },
     gallery: [
-      { icon: '🏆', label: 'COLLEGE TIER 1', sub: 'Official Recognition' },
-      { icon: '🥇', label: 'TOP 100 PERFORMER', sub: 'Personal Achievement' },
       { img: 'src/hackathon/gdg/goodies.png', label: 'GOOGLE GOODIES', sub: 'Cloud Swag Unlocked' },
-      { icon: '🌱', label: 'GROWTH MINDSET', sub: 'Curiosity > Knowledge' },
     ],
     certs: [
       { icon: '🏆', name: 'COLLEGE TIER 1 — GDG', issuer: 'Google Developer Group' },
