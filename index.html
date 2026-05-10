@@ -1675,19 +1675,20 @@ footer{
     <div class="contact-form reveal">
       <div class="form-group">
         <label class="form-label">// IDENTIFIER [NAME]</label>
-        <input class="form-input" type="text" placeholder="Enter your name..."/>
+        <input id="contact-name" class="form-input" type="text" placeholder="Enter your name..."/>
       </div>
       <div class="form-group">
         <label class="form-label">// SIGNAL_FREQ [EMAIL]</label>
-        <input class="form-input" type="email" placeholder="your@email.com"/>
+        <input id="contact-email" class="form-input" type="email" placeholder="your@email.com"/>
       </div>
       <div class="form-group">
         <label class="form-label">// TRANSMISSION [MESSAGE]</label>
-        <textarea class="form-textarea" placeholder="What are you building?..."></textarea>
+        <textarea id="contact-message" class="form-textarea" placeholder="What are you building?..."></textarea>
       </div>
-      <button class="btn-primary" style="width:100%;padding:1rem;font-size:.8rem">
+      <button id="contact-btn" onclick="sendMessage()" class="btn-primary" style="width:100%;padding:1rem;font-size:.8rem">
         ◉ TRANSMIT MESSAGE
       </button>
+      <div id="contact-status" style="display:none;margin-top:.75rem;font-family:'Share Tech Mono',monospace;font-size:.7rem;text-align:center;padding:.6rem;border-radius:4px;"></div>
     </div>
     <div class="social-links reveal reveal-delay-2">
       <a href="https://github.com/yashitchugh/" class="social-link">
@@ -2575,6 +2576,60 @@ document.addEventListener('keydown', e => {
     closeHackathonMemory();
   }
 });
+</script>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ── EMAILJS CONFIG ──
+  const EJS_PUBLIC_KEY   = 'mazUmOe_CCd1ZtmaT';
+  const EJS_SERVICE_ID   = 'service_44e01jj';
+  const EJS_TEMPLATE_ID  = 'template_jxlcd0d';
+
+  emailjs.init(EJS_PUBLIC_KEY);
+
+  function sendMessage() {
+    const name    = document.getElementById('contact-name').value.trim();
+    const email   = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    const btn     = document.getElementById('contact-btn');
+    const status  = document.getElementById('contact-status');
+
+    if (!name || !email || !message) {
+      showStatus('⚠ All fields required.', '#ff0090');
+      return;
+    }
+
+    btn.textContent = '⏳ TRANSMITTING...';
+    btn.disabled = true;
+
+    emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      name:       name,
+      from_email: email,
+      message:    message,
+    }).then(() => {
+      showStatus('✓ MESSAGE TRANSMITTED SUCCESSFULLY', 'var(--green)');
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-message').value = '';
+      btn.textContent = '◉ TRANSMIT MESSAGE';
+      btn.disabled = false;
+    }).catch(err => {
+      showStatus('✕ TRANSMISSION FAILED — TRY AGAIN', '#ff0090');
+      btn.textContent = '◉ TRANSMIT MESSAGE';
+      btn.disabled = false;
+    });
+  }
+
+  function showStatus(msg, color) {
+    const s = document.getElementById('contact-status');
+    s.textContent = msg;
+    s.style.display = 'block';
+    s.style.color = color;
+    s.style.border = `1px solid ${color}`;
+    s.style.background = `${color}15`;
+    setTimeout(() => s.style.display = 'none', 5000);
+  }
 </script>
 </body>
 </html>
